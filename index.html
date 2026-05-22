@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#1a1a2e">
@@ -23,7 +22,6 @@
             font-family: 'Segoe UI', system-ui, sans-serif;
         }
         
-        /* ЭКРАН ЗАГРУЗКИ */
         .loading-screen {
             position: fixed;
             top: 0;
@@ -51,7 +49,6 @@
             to { transform: translateY(-20px); }
         }
         
-        /* ГЛАВНОЕ МЕНЮ */
         .main-menu {
             position: fixed;
             top: 0;
@@ -130,7 +127,6 @@
             box-shadow: 0 3px 0 #1a4a1a;
         }
         
-        /* ИГРОВОЙ ИНТЕРФЕЙС */
         .game-wrapper {
             background: rgba(0,0,0,0.3);
             border-radius: 45px;
@@ -155,7 +151,6 @@
         }
         canvas:active { cursor: grabbing; }
         
-        /* АНИМАЦИИ */
         .flash-effect {
             position: fixed;
             top: 0;
@@ -190,7 +185,6 @@
             100% { transform: translate(-50%, -100%) scale(0.8); opacity: 0; }
         }
         
-        /* ВЕРХНЯЯ ПАНЕЛЬ */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -243,7 +237,6 @@
             box-shadow: 0 1px 0 #1a2a3a;
         }
         
-        /* ПАНЕЛЬ ФИГУР */
         .pieces-panel {
             display: flex;
             justify-content: center;
@@ -274,7 +267,6 @@
             pointer-events: none;
         }
         
-        /* КНОПКИ */
         .button-group {
             display: flex;
             gap: 10px;
@@ -299,7 +291,6 @@
             box-shadow: 0 4px 0 #c66900;
         }
         
-        /* ПЛАВАЮЩАЯ КОПИЯ ФИГУРЫ */
         .drag-preview {
             position: fixed;
             pointer-events: none;
@@ -309,7 +300,6 @@
             transform: translate(-50%, -50%);
         }
         
-        /* МОДАЛЬНЫЕ ОКНА */
         .modal-overlay, .gameover-overlay {
             position: fixed;
             top: 0;
@@ -530,10 +520,10 @@
     let grid = Array(SIZE).fill().map(() => Array(SIZE).fill(0));
     let score = 0, best = 0, coins = 0;
     let shapes = [], selectedIdx = -1, bag = null, gameOverFlag = false, saved = null;
-    let dragActive = false, dragFigure = null, dragPreview = null, hoverR = -1, hoverC = -1;
+    let dragActive = false, dragFigure = null, dragPreview = null;
+    let hoverR = -1, hoverC = -1;
     let canvas, ctx, scoreSpan, piecesDiv, bestGameSpan, coinsGameSpan, bestMenuSpan, coinsMenuSpan, gameUI, menuUI, loadingUI;
     
-    // Сохранение/загрузка
     function saveGame() {
         if(!bag) return;
         saved = {
@@ -573,19 +563,48 @@
         for(let b of figure.blocks) {
             const nr = r + b.row, nc = c + b.col;
             if(nr<0 || nr>=SIZE || nc<0 || nc>=SIZE || grid[nr][nc]) return false;
-        } return true;
+        }
+        return true;
     }
     function place(figure, r, c) {
-        for(let b of figure.blocks) grid[r + b.row][c + b.col] = 1;
+        for(let b of figure.blocks) {
+            grid[r + b.row][c + b.col] = 1;
+        }
+    }
+    
+    // Вспомогательная функция: получить "центр" фигуры в клетках (верхний левый угол)
+    function getTopLeftFromCenter(figure, centerRow, centerCol) {
+        const box = getBoundingBox(figure.blocks);
+        // centreRow, centreCol — центр фигуры в координатах поля (не целые)
+        let topRow = Math.round(centerRow - box.rows / 2);
+        let leftCol = Math.round(centerCol - box.cols / 2);
+        // Корректируем, чтобы не вылезать за края
+        topRow = Math.max(0, Math.min(SIZE - box.rows, topRow));
+        leftCol = Math.max(0, Math.min(SIZE - box.cols, leftCol));
+        return { r: topRow, c: leftCol };
     }
     
     function clearLines() {
         let rows = [], cols = [];
         for(let i=0; i<SIZE; i++) if(grid[i].every(v=>v===1)) rows.push(i);
-        for(let j=0; j<SIZE; j++) { let full=true; for(let i=0;i<SIZE;i++) if(grid[i][j]===0){full=false;break;} if(full) cols.push(j); }
+        for(let j=0; j<SIZE; j++) {
+            let full=true;
+            for(let i=0;i<SIZE;i++) if(grid[i][j]===0){full=false;break;}
+            if(full) cols.push(j);
+        }
         let cleared=0;
-        for(let r of rows) { for(let j=0;j<SIZE;j++) { if(grid[r][j]) cleared++; grid[r][j]=0; } }
-        for(let c of cols) { for(let i=0;i<SIZE;i++) { if(grid[i][c]) cleared++; grid[i][c]=0; } }
+        for(let r of rows) {
+            for(let j=0;j<SIZE;j++) {
+                if(grid[r][j]) cleared++;
+                grid[r][j]=0;
+            }
+        }
+        for(let c of cols) {
+            for(let i=0;i<SIZE;i++) {
+                if(grid[i][c]) cleared++;
+                grid[i][c]=0;
+            }
+        }
         let fullClear = true;
         for(let i=0;i<SIZE;i++) for(let j=0;j<SIZE;j++) if(grid[i][j]) fullClear=false;
         if(cleared) {
@@ -598,34 +617,62 @@
             else if(lines >= 3) { playMultiLine(lines); showFlash(); if(lines>=4) showCombo(`🔥 ${lines} LINES! 🔥`); }
             else { playLineClear(); }
             let oldC = coinsForScore(oldScore), newC = coinsForScore(score);
-            if(newC > oldC) { const n = document.createElement('div'); n.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:linear-gradient(145deg,#ffd93d,#ffaa00);color:#5a3a00;padding:8px 20px;border-radius:50px;font-weight:bold;font-size:18px;z-index:10002'; n.innerHTML=`+${newC-oldC} 🪙`; document.body.appendChild(n); setTimeout(()=>n.remove(),1500); }
+            if(newC > oldC) {
+                const n = document.createElement('div');
+                n.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:linear-gradient(145deg,#ffd93d,#ffaa00);color:#5a3a00;padding:8px 20px;border-radius:50px;font-weight:bold;font-size:18px;z-index:10002';
+                n.innerHTML=`+${newC-oldC} 🪙`;
+                document.body.appendChild(n);
+                setTimeout(()=>n.remove(),1500);
+            }
             return true;
-        } return false;
+        }
+        return false;
     }
     
     function hasMoves() {
         for(let f of shapes) {
             const box = getBoundingBox(f.blocks);
-            for(let i=0; i<=SIZE-box.rows; i++) for(let j=0; j<=SIZE-box.cols; j++) if(canPlace(f,i,j)) return true;
-        } return false;
+            for(let i=0; i<=SIZE-box.rows; i++) {
+                for(let j=0; j<=SIZE-box.cols; j++) {
+                    if(canPlace(f,i,j)) return true;
+                }
+            }
+        }
+        return false;
     }
     
     function tryPlace(figure, r, c, idx) {
         if(canPlace(figure, r, c)) {
-            place(figure, r, c); shapes.splice(idx,1); selectedIdx=-1; playPlace(); clearLines(); drawBoard(); drawPieces(); saveGame();
-            if(!shapes.length) setTimeout(()=>{ shapes = bag.get3(); drawPieces(); drawBoard(); saveGame(); }, 100);
-            if(!hasMoves() && shapes.length) setTimeout(()=>{ const ccc = awardCoins(); const ov = document.createElement('div'); ov.className='gameover-overlay'; ov.innerHTML=`<div class="gameover-card"><div class="gameover-icon">💀</div><div class="gameover-title">GAME OVER</div><div class="gameover-score"><div class="gameover-score-value">${score}</div></div><div class="gameover-coins-earned" style="margin:8px 0;color:#ffd93d;">🏆 +${ccc} монет</div><div class="gameover-buttons"><button class="gameover-btn gameover-btn-new" id="gn">🔄 НОВАЯ</button><button class="gameover-btn gameover-btn-menu" id="gm">🏠 МЕНЮ</button></div></div>`; document.body.appendChild(ov); document.getElementById('gn').onclick=()=>{ ov.remove(); resetFull(); showGame(); }; document.getElementById('gm').onclick=()=>{ ov.remove(); showMenu(); }; }, 100);
+            place(figure, r, c);
+            shapes.splice(idx,1);
+            selectedIdx=-1;
+            playPlace();
+            clearLines();
+            drawBoard();
+            drawPieces();
+            saveGame();
+            if(!shapes.length) {
+                setTimeout(()=>{
+                    shapes = bag.get3();
+                    drawPieces();
+                    drawBoard();
+                    saveGame();
+                }, 100);
+            }
+            if(!hasMoves() && shapes.length) {
+                setTimeout(()=>{
+                    const ccc = awardCoins();
+                    const ov = document.createElement('div');
+                    ov.className='gameover-overlay';
+                    ov.innerHTML=`<div class="gameover-card"><div class="gameover-icon">💀</div><div class="gameover-title">GAME OVER</div><div class="gameover-score"><div class="gameover-score-value">${score}</div></div><div class="gameover-coins-earned" style="margin:8px 0;color:#ffd93d;">🏆 +${ccc} монет</div><div class="gameover-buttons"><button class="gameover-btn gameover-btn-new" id="gn">🔄 НОВАЯ</button><button class="gameover-btn gameover-btn-menu" id="gm">🏠 МЕНЮ</button></div></div>`;
+                    document.body.appendChild(ov);
+                    document.getElementById('gn').onclick=()=>{ ov.remove(); resetFull(); showGame(); };
+                    document.getElementById('gm').onclick=()=>{ ov.remove(); showMenu(); };
+                }, 100);
+            }
             return true;
-        } return false;
-    }
-    
-    function findNearest(figure, cx, cy) {
-        let bestR=-1, bestC=-1, bestD=Infinity;
-        const box = getBoundingBox(figure.blocks);
-        for(let r=0; r<=SIZE-box.rows; r++) for(let c=0; c<=SIZE-box.cols; c++) if(canPlace(figure, r, c)) {
-            const d = Math.hypot((r+box.rows/2)-cx, (c+box.cols/2)-cy);
-            if(d<bestD) { bestD=d; bestR=r; bestC=c; }
-        } return bestD<1.2 ? {r:bestR, c:bestC} : null;
+        }
+        return false;
     }
     
     // ========== ОТРИСОВКА ==========
@@ -649,33 +696,33 @@
         }
     }
     
-    function drawBoard(hr=-1, hc=-1, pfigure=null) {
+    function drawBoard() {
         const w=canvas.width, h=canvas.height, cw=w/SIZE, ch=h/SIZE;
         ctx.clearRect(0,0,w,h);
-        for(let i=0;i<SIZE;i++) for(let j=0;j<SIZE;j++) {
-            const x=j*cw, y=i*ch;
-            if(grid[i][j]) {
-                const grad=ctx.createLinearGradient(x,y,x+cw,y+ch);
-                grad.addColorStop(0,'#6fc8ff'); grad.addColorStop(1,'#3c9fcf');
-                ctx.fillStyle=grad; ctx.fillRect(x,y,cw-1.5,ch-1.5);
-                ctx.fillStyle='#b1e2ff'; ctx.fillRect(x+3,y+3,cw-7,ch-7);
-            } else {
-                ctx.fillStyle='#1b2e39'; ctx.fillRect(x,y,cw-1,ch-1);
-                ctx.strokeStyle='#2f5568'; ctx.lineWidth=0.8; ctx.strokeRect(x+1,y+1,cw-3,ch-3);
+        for(let i=0;i<SIZE;i++) {
+            for(let j=0;j<SIZE;j++) {
+                const x=j*cw, y=i*ch;
+                if(grid[i][j]) {
+                    const grad=ctx.createLinearGradient(x,y,x+cw,y+ch);
+                    grad.addColorStop(0,'#6fc8ff'); grad.addColorStop(1,'#3c9fcf');
+                    ctx.fillStyle=grad;
+                    ctx.fillRect(x,y,cw-1.5,ch-1.5);
+                    ctx.fillStyle='#b1e2ff';
+                    ctx.fillRect(x+3,y+3,cw-7,ch-7);
+                } else {
+                    ctx.fillStyle='#1b2e39';
+                    ctx.fillRect(x,y,cw-1,ch-1);
+                    ctx.strokeStyle='#2f5568';
+                    ctx.lineWidth=0.8;
+                    ctx.strokeRect(x+1,y+1,cw-3,ch-3);
+                }
             }
         }
-        if(pfigure && hr>=0 && hc>=0) {
-            ctx.globalAlpha=0.65;
-            const can = canPlace(pfigure, hr, hc);
-            for(let b of pfigure.blocks) {
-                const x=(hc+b.col)*cw, y=(hr+b.row)*ch;
-                ctx.fillStyle=can?'#90ff90':'#ff9090';
-                ctx.fillRect(x,y,cw-1.5,ch-1.5);
-                ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.fillRect(x+3,y+3,cw-7,ch-7);
-            } ctx.globalAlpha=1;
-        }
         if(selectedIdx!==-1 && !dragActive && shapes[selectedIdx]) {
-            ctx.globalAlpha=0.12; ctx.fillStyle='#ffe29a'; ctx.fillRect(0,0,w,h); ctx.globalAlpha=1;
+            ctx.globalAlpha=0.12;
+            ctx.fillStyle='#ffe29a';
+            ctx.fillRect(0,0,w,h);
+            ctx.globalAlpha=1;
         }
     }
     
@@ -688,58 +735,150 @@
             mini.className='piece-canvas';
             drawShapeCanvas(f, mini, 70);
             card.appendChild(mini);
-            card.addEventListener('touchstart', (e)=>{ e.preventDefault(); const t=e.touches[0]; startDrag(f, idx, t.clientX, t.clientY); });
-            card.addEventListener('mousedown', (e)=>{ e.preventDefault(); startDrag(f, idx, e.clientX, e.clientY); });
-            card.onclick=(e)=>{ if(!dragActive){ e.stopPropagation(); selectedIdx=idx; drawBoard(); document.querySelectorAll('.piece-card').forEach(c=>c.style.opacity='0.6'); card.style.opacity='1'; } };
+            card.addEventListener('touchstart', (e)=>{
+                e.preventDefault();
+                const t=e.touches[0];
+                startDrag(f, idx, t.clientX, t.clientY);
+            });
+            card.addEventListener('mousedown', (e)=>{
+                e.preventDefault();
+                startDrag(f, idx, e.clientX, e.clientY);
+            });
+            card.onclick=(e)=>{
+                if(!dragActive){
+                    e.stopPropagation();
+                    selectedIdx=idx;
+                    drawBoard();
+                    document.querySelectorAll('.piece-card').forEach(c=>c.style.opacity='0.6');
+                    card.style.opacity='1';
+                }
+            };
             piecesDiv.appendChild(card);
         });
     }
     
     function startDrag(figure, idx, x, y) {
-        dragActive=true; selectedIdx=idx; dragFigure={ blocks: figure.blocks.map(b=>({row:b.row,col:b.col})), color: figure.color, name: figure.name };
-        dragPreview=document.createElement('div'); dragPreview.className='drag-preview';
-        const pc=document.createElement('canvas'); drawShapeCanvas(dragFigure, pc, 75);
-        dragPreview.appendChild(pc); document.body.appendChild(dragPreview);
-        dragPreview.style.left=x+'px'; dragPreview.style.top=y+'px';
+        dragActive=true;
+        selectedIdx=idx;
+        dragFigure={
+            blocks: figure.blocks.map(b=>({row:b.row,col:b.col})),
+            color: figure.color,
+            name: figure.name
+        };
+        dragPreview=document.createElement('div');
+        dragPreview.className='drag-preview';
+        const pc=document.createElement('canvas');
+        drawShapeCanvas(dragFigure, pc, 75);
+        dragPreview.appendChild(pc);
+        document.body.appendChild(dragPreview);
+        dragPreview.style.left=x+'px';
+        dragPreview.style.top=y+'px';
         document.querySelectorAll('.piece-card').forEach(c=>c.style.opacity='0.4');
         if(document.querySelectorAll('.piece-card')[idx]) document.querySelectorAll('.piece-card')[idx].style.opacity='0.2';
-        window.addEventListener('touchmove', onMove); window.addEventListener('touchend', onEnd);
-        window.addEventListener('mousemove', onMove); window.addEventListener('mouseup', onEnd);
+        window.addEventListener('touchmove', onMove);
+        window.addEventListener('touchend', onEnd);
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onEnd);
     }
     
     function onMove(e) {
-        if(!dragActive) return; e.preventDefault();
+        if(!dragActive) return;
+        e.preventDefault();
         let x,y;
-        if(e.touches) { x=e.touches[0].clientX; y=e.touches[0].clientY; }
-        else { x=e.clientX; y=e.clientY; }
-        if(dragPreview) { dragPreview.style.left=x+'px'; dragPreview.style.top=y+'px'; }
+        if(e.touches) {
+            x=e.touches[0].clientX;
+            y=e.touches[0].clientY;
+        } else {
+            x=e.clientX;
+            y=e.clientY;
+        }
+        if(dragPreview) {
+            dragPreview.style.left=x+'px';
+            dragPreview.style.top=y+'px';
+        }
         const rect=canvas.getBoundingClientRect();
         if(x>=rect.left && x<=rect.right && y>=rect.top && y<=rect.bottom) {
             const sx=canvas.width/rect.width, sy=canvas.height/rect.height;
             const cx=(x-rect.left)*sx, cy=(y-rect.top)*sy;
             const cw=canvas.width/SIZE, ch=canvas.height/SIZE;
-            let col=cx/cw, row=cy/ch;
-            const box = getBoundingBox(dragFigure.blocks);
-            let tr = Math.max(0, Math.min(SIZE-box.rows, Math.floor(row-box.rows/2)));
-            let tc = Math.max(0, Math.min(SIZE-box.cols, Math.floor(col-box.cols/2)));
-            const near = findNearest(dragFigure, row, col);
-            if(near) { tr=near.r; tc=near.c; }
-            hoverR=tr; hoverC=tc;
-            drawBoard(hoverR, hoverC, dragFigure);
+            const col = cx / cw;
+            const row = cy / ch;
+            // Показываем "призрачную" фигуру на поле
+            const { r, c: colPos } = getTopLeftFromCenter(dragFigure, row, col);
+            hoverR = r;
+            hoverC = colPos;
+            drawBoardWithPreview(dragFigure, hoverR, hoverC);
             return;
         }
-        hoverR=-1; hoverC=-1; drawBoard();
+        hoverR = -1;
+        hoverC = -1;
+        drawBoard();
+    }
+    
+    function drawBoardWithPreview(figure, hr, hc) {
+        const w=canvas.width, h=canvas.height, cw=w/SIZE, ch=h/SIZE;
+        ctx.clearRect(0,0,w,h);
+        for(let i=0;i<SIZE;i++) {
+            for(let j=0;j<SIZE;j++) {
+                const x=j*cw, y=i*ch;
+                if(grid[i][j]) {
+                    const grad=ctx.createLinearGradient(x,y,x+cw,y+ch);
+                    grad.addColorStop(0,'#6fc8ff'); grad.addColorStop(1,'#3c9fcf');
+                    ctx.fillStyle=grad;
+                    ctx.fillRect(x,y,cw-1.5,ch-1.5);
+                    ctx.fillStyle='#b1e2ff';
+                    ctx.fillRect(x+3,y+3,cw-7,ch-7);
+                } else {
+                    ctx.fillStyle='#1b2e39';
+                    ctx.fillRect(x,y,cw-1,ch-1);
+                    ctx.strokeStyle='#2f5568';
+                    ctx.lineWidth=0.8;
+                    ctx.strokeRect(x+1,y+1,cw-3,ch-3);
+                }
+            }
+        }
+        // Рисуем предпросмотр, если есть
+        if(figure && hr>=0 && hc>=0) {
+            ctx.globalAlpha=0.65;
+            const can = canPlace(figure, hr, hc);
+            for(let b of figure.blocks) {
+                const x=(hc+b.col)*cw, y=(hr+b.row)*ch;
+                ctx.fillStyle=can?'#90ff90':'#ff9090';
+                ctx.fillRect(x,y,cw-1.5,ch-1.5);
+                ctx.fillStyle='rgba(255,255,255,0.4)';
+                ctx.fillRect(x+3,y+3,cw-7,ch-7);
+            }
+            ctx.globalAlpha=1;
+        }
+        if(selectedIdx!==-1 && !dragActive && shapes[selectedIdx]) {
+            ctx.globalAlpha=0.12;
+            ctx.fillStyle='#ffe29a';
+            ctx.fillRect(0,0,w,h);
+            ctx.globalAlpha=1;
+        }
     }
     
     function onEnd(e) {
-        if(!dragActive) return; dragActive=false;
-        if(dragPreview) { dragPreview.remove(); dragPreview=null; }
-        if(hoverR>=0 && hoverC>=0 && dragFigure && canPlace(dragFigure, hoverR, hoverC)) tryPlace(dragFigure, hoverR, hoverC, selectedIdx);
-        dragFigure=null; hoverR=-1; hoverC=-1; selectedIdx=-1;
+        if(!dragActive) return;
+        dragActive=false;
+        if(dragPreview) {
+            dragPreview.remove();
+            dragPreview=null;
+        }
+        if(hoverR>=0 && hoverC>=0 && dragFigure && canPlace(dragFigure, hoverR, hoverC)) {
+            tryPlace(dragFigure, hoverR, hoverC, selectedIdx);
+        }
+        dragFigure=null;
+        hoverR=-1;
+        hoverC=-1;
+        selectedIdx=-1;
         document.querySelectorAll('.piece-card').forEach(c=>c.style.opacity='1');
-        drawBoard(); drawPieces();
-        window.removeEventListener('touchmove', onMove); window.removeEventListener('touchend', onEnd);
-        window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onEnd);
+        drawBoard();
+        drawPieces();
+        window.removeEventListener('touchmove', onMove);
+        window.removeEventListener('touchend', onEnd);
+        window.removeEventListener('mousemove', onMove);
+        window.removeEventListener('mouseup', onEnd);
     }
     
     function onCanvasTap(e) {
@@ -747,21 +886,27 @@
         const rect=canvas.getBoundingClientRect();
         const sx=canvas.width/rect.width, sy=canvas.height/rect.height;
         let x,y;
-        if(e.touches) { x=e.touches[0].clientX; y=e.touches[0].clientY; e.preventDefault(); }
-        else { x=e.clientX; y=e.clientY; }
+        if(e.touches) {
+            x=e.touches[0].clientX;
+            y=e.touches[0].clientY;
+            e.preventDefault();
+        } else {
+            x=e.clientX;
+            y=e.clientY;
+        }
         let cx=(x-rect.left)*sx, cy=(y-rect.top)*sy;
         if(cx<0) cx=0; if(cy<0) cy=0;
         const cw=canvas.width/SIZE, ch=canvas.height/SIZE;
-        let col=cx/cw, row=cy/ch;
+        const col = cx / cw;
+        const row = cy / ch;
         if(selectedIdx!==-1 && shapes[selectedIdx]) {
             const f=shapes[selectedIdx];
-            const box = getBoundingBox(f.blocks);
-            let tr=Math.max(0, Math.min(SIZE-box.rows, Math.floor(row-box.rows/2)));
-            let tc=Math.max(0, Math.min(SIZE-box.cols, Math.floor(col-box.cols/2)));
-            const near=findNearest(f, row, col);
-            if(near) { tr=near.r; tc=near.c; }
-            if(canPlace(f, tr, tc)) tryPlace(f, tr, tc, selectedIdx);
-            drawBoard(); drawPieces();
+            const { r, c: colPos } = getTopLeftFromCenter(f, row, col);
+            if(canPlace(f, r, colPos)) {
+                tryPlace(f, r, colPos, selectedIdx);
+                drawBoard();
+                drawPieces();
+            }
         }
     }
     
@@ -769,42 +914,94 @@
     
     function resetFull() {
         grid=Array(SIZE).fill().map(()=>Array(SIZE).fill(0));
-        score=0; gameOverFlag=false; bag=new FigureBag(); shapes=bag.get3(); selectedIdx=-1; dragActive=false;
-        updateScore(); drawBoard(); drawPieces(); checkBest(); saveGame();
+        score=0;
+        gameOverFlag=false;
+        bag=new FigureBag();
+        shapes=bag.get3();
+        selectedIdx=-1;
+        dragActive=false;
+        updateScore();
+        drawBoard();
+        drawPieces();
+        checkBest();
+        saveGame();
     }
     
     function showGame() {
         if(!loadGame()) resetFull();
-        menuUI.style.display='none'; gameUI.style.display='block';
-        updateBestUI(); updateCoinsUI();
-        initAudio(); if(audioCtx) audioCtx.resume();
+        menuUI.style.display='none';
+        gameUI.style.display='block';
+        updateBestUI();
+        updateCoinsUI();
+        initAudio();
+        if(audioCtx) audioCtx.resume();
     }
-    function showMenu() { menuUI.style.display='flex'; gameUI.style.display='none'; updateBestUI(); updateCoinsUI(); }
+    function showMenu() {
+        menuUI.style.display='flex';
+        gameUI.style.display='none';
+        updateBestUI();
+        updateCoinsUI();
+    }
     
     function showSettings() {
-        const ov=document.createElement('div'); ov.className='modal-overlay';
+        const ov=document.createElement('div');
+        ov.className='modal-overlay';
         ov.innerHTML=`<div class="modal-card"><div class="modal-title">⚙️ НАСТРОЙКИ</div><button class="modal-btn" id="mreset">⚠️ СБРОСИТЬ ПРОГРЕСС</button><button class="modal-btn modal-btn-danger" id="mmenu">🏠 ГЛАВНОЕ МЕНЮ</button><button class="modal-btn modal-close" id="mclose">✖️ ЗАКРЫТЬ</button></div>`;
         document.body.appendChild(ov);
-        document.getElementById('mreset').onclick=()=>{ if(confirm('Сбросить весь прогресс?')){ best=0; coins=0; saveBest(); saveCoins(); updateBestUI(); updateCoinsUI(); resetFull(); showGame(); } ov.remove(); };
-        document.getElementById('mmenu').onclick=()=>{ ov.remove(); saveGame(); showMenu(); };
+        document.getElementById('mreset').onclick=()=>{
+            if(confirm('Сбросить весь прогресс?')){
+                best=0;
+                coins=0;
+                saveBest();
+                saveCoins();
+                updateBestUI();
+                updateCoinsUI();
+                resetFull();
+                showGame();
+            }
+            ov.remove();
+        };
+        document.getElementById('mmenu').onclick=()=>{
+            ov.remove();
+            saveGame();
+            showMenu();
+        };
         document.getElementById('mclose').onclick=()=>ov.remove();
         ov.onclick=(e)=>e.target===ov&&ov.remove();
     }
     
     window.onload=()=>{
-        canvas=document.getElementById('gridCanvas'); ctx=canvas.getContext('2d');
-        scoreSpan=document.getElementById('scoreValue'); piecesDiv=document.getElementById('piecesPanel');
-        bestGameSpan=document.getElementById('gameBestScore'); coinsGameSpan=document.getElementById('gameCoins');
-        bestMenuSpan=document.getElementById('menuBestScore'); coinsMenuSpan=document.getElementById('menuCoins');
-        gameUI=document.getElementById('gameInterface'); menuUI=document.getElementById('mainMenu'); loadingUI=document.getElementById('loadingScreen');
-        loadBest(); loadCoins(); updateBestUI(); updateCoinsUI(); bag=new FigureBag();
+        canvas=document.getElementById('gridCanvas');
+        ctx=canvas.getContext('2d');
+        scoreSpan=document.getElementById('scoreValue');
+        piecesDiv=document.getElementById('piecesPanel');
+        bestGameSpan=document.getElementById('gameBestScore');
+        coinsGameSpan=document.getElementById('gameCoins');
+        bestMenuSpan=document.getElementById('menuBestScore');
+        coinsMenuSpan=document.getElementById('menuCoins');
+        gameUI=document.getElementById('gameInterface');
+        menuUI=document.getElementById('mainMenu');
+        loadingUI=document.getElementById('loadingScreen');
+        loadBest();
+        loadCoins();
+        updateBestUI();
+        updateCoinsUI();
+        bag=new FigureBag();
         document.getElementById('playBtn').onclick=()=>showGame();
         document.getElementById('resetGameBtn').onclick=()=>{ resetFull(); showGame(); };
         document.getElementById('menuBtn').onclick=()=>{ saveGame(); showMenu(); };
         document.getElementById('settingsBtn').onclick=()=>showSettings();
         canvas.addEventListener('click', onCanvasTap);
-        canvas.addEventListener('touchstart', (e)=>{ if(!dragActive){ e.preventDefault(); onCanvasTap(e); } });
-        setTimeout(()=>{ loadingUI.style.display='none'; menuUI.style.display='flex'; }, 1200);
+        canvas.addEventListener('touchstart', (e)=>{
+            if(!dragActive){
+                e.preventDefault();
+                onCanvasTap(e);
+            }
+        });
+        setTimeout(()=>{
+            loadingUI.style.display='none';
+            menuUI.style.display='flex';
+        }, 1200);
     };
 </script>
 </body>

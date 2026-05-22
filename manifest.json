@@ -4,6 +4,7 @@
   "short_name": "BlockBlast",
   "description": "Классическая головоломка Block Blast для телефона",
   "start_url": ".",
+  "scope": "/",
   "display": "standalone",
   "theme_color": "#1e2f3c",
   "background_color": "#0f1a24",

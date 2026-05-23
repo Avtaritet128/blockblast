@@ -356,7 +356,6 @@
             box-shadow: 0 0 5px #ffaa00;
         }
         
-        /* КРАСИВОЕ ОКНО ПОДТВЕРЖДЕНИЯ */
         .confirm-overlay {
             position: fixed;
             top: 0;
@@ -507,7 +506,7 @@
     function saveSoundSetting() { localStorage.setItem('blockblast_sound', soundEnabled); }
     function saveVolume() { localStorage.setItem('blockblast_volume', soundVolume); }
     
-    // ==================== ФИГУРЫ (J удалена) ====================
+    // ==================== ФИГУРЫ ====================
     const FIGURES_DATA = {
         'single': [[0,0]],
         'line2_h': [[0,0],[0,1]],
@@ -637,7 +636,6 @@
     let extraLivesUsed = 0;
     let maxExtraLivesPerGame = 3;
     
-    // КРАСИВОЕ ОКНО ПОДТВЕРЖДЕНИЯ
     function showConfirmDialog(title, message, onConfirm) {
         const overlay = document.createElement('div');
         overlay.className = 'confirm-overlay';
@@ -1230,6 +1228,15 @@
         ov.onclick = (e) => { if(e.target === ov) ov.remove(); };
     }
     
+    // Регистрация Service Worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('Service Worker зарегистрирован:', reg))
+                .catch(err => console.log('Ошибка регистрации SW:', err));
+        });
+    }
+    
     window.onload = () => {
         loadSoundSetting();
         canvas = document.getElementById('gridCanvas');
@@ -1266,14 +1273,6 @@
             menuUI.style.display = 'flex';
         }, 1200);
     };
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then(reg => console.log('Service Worker зарегистрирован:', reg))
-      .catch(err => console.log('Ошибка регистрации SW:', err));
-  });
-}
 </script>
 </body>
 </html>

@@ -283,32 +283,6 @@
         .modal-btn-danger { background: #ff9800; box-shadow: 0 3px 0 #c66900; }
         .modal-close { background: #2c485e; box-shadow: 0 3px 0 #0f1920; margin-top: 16px; }
         
-        .volume-slider {
-            width: 100%;
-            margin: 15px 0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .volume-slider span { font-size: 18px; }
-        input[type="range"] {
-            flex: 1;
-            height: 4px;
-            -webkit-appearance: none;
-            background: #ffd93d;
-            border-radius: 2px;
-            outline: none;
-        }
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #ffd93d;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 0 5px #ffaa00;
-        }
-        
         @media (max-width: 550px) {
             .piece-canvas { width: 65px; height: 65px; }
             .stats-left { gap: 10px; }
@@ -369,14 +343,8 @@
 </div>
 
 <script>
-    // УПРОЩЁННАЯ ВЕРСИЯ ДЛЯ ТЕЛЕФОНА
     (function(){
-        // Простая проверка на ошибки
         try {
-            // ==================== НАСТРОЙКИ ====================
-            let soundEnabled = true;
-            let soundVolume = 0.25;
-            
             // ==================== ФИГУРЫ ====================
             const FIGURES_DATA = {
                 'single': [[0,0]],
@@ -455,7 +423,7 @@
             let score = 0, best = 0, coins = 0;
             let shapes = [], selectedIdx = -1, bag = null;
             let dragActive = false, dragFigure = null, dragPreview = null;
-            let dragOffsetX = 0, dragOffsetY = 0;
+            let dragStartX = 0, dragStartY = 0;
             let hoverR = -1, hoverC = -1;
             let canvas, ctx, scoreSpan, piecesDiv, bestGameSpan, coinsGameSpan, bestMenuSpan, coinsMenuSpan, gameUI, menuUI, loadingUI;
             
@@ -699,25 +667,29 @@
                     drawShapeOnCanvas(f, mini, 75);
                     card.appendChild(mini);
                     
+                    // Только touchstart для телефона, без mousedown конфликта
                     card.addEventListener('touchstart', (e)=>{
                         e.preventDefault();
                         const t = e.touches[0];
                         const rect = card.getBoundingClientRect();
                         const cardCenterX = rect.left + rect.width/2;
                         const cardCenterY = rect.top + rect.height/2;
-                        dragOffsetX = (t.clientX - cardCenterX) / (rect.width/2) * 0.5;
-                        dragOffsetY = (t.clientY - cardCenterY) / (rect.height/2) * 0.5;
+                        dragStartX = t.clientX - cardCenterX;
+                        dragStartY = t.clientY - cardCenterY;
                         startDrag(f, idx, t.clientX, t.clientY);
                     });
+                    
+                    // Для мыши (тестирование на ПК)
                     card.addEventListener('mousedown', (e)=>{
                         e.preventDefault();
                         const rect = card.getBoundingClientRect();
                         const cardCenterX = rect.left + rect.width/2;
                         const cardCenterY = rect.top + rect.height/2;
-                        dragOffsetX = (e.clientX - cardCenterX) / (rect.width/2) * 0.5;
-                        dragOffsetY = (e.clientY - cardCenterY) / (rect.height/2) * 0.5;
+                        dragStartX = e.clientX - cardCenterX;
+                        dragStartY = e.clientY - cardCenterY;
                         startDrag(f, idx, e.clientX, e.clientY);
                     });
+                    
                     piecesDiv.appendChild(card);
                 });
             }
@@ -738,7 +710,7 @@
                 document.body.appendChild(dragPreview);
                 dragPreview.style.left=x+'px';
                 dragPreview.style.top=y+'px';
-                drawPieces();
+                
                 window.addEventListener('touchmove', onMove);
                 window.addEventListener('touchend', onEnd);
                 window.addEventListener('mousemove', onMove);
@@ -767,7 +739,7 @@
                     const cw=canvas.width/SIZE, ch=canvas.height/SIZE;
                     const touchCellX = cx / cw;
                     const touchCellY = cy / ch;
-                    const { r, c: colPos } = getTopLeftFromTouch(dragFigure, touchCellX, touchCellY, dragOffsetX, dragOffsetY);
+                    const { r, c: colPos } = getTopLeftFromTouch(dragFigure, touchCellX, touchCellY, dragStartX/75, dragStartY/75);
                     hoverR = r;
                     hoverC = colPos;
                     drawBoardWithPreview(dragFigure, hoverR, hoverC);

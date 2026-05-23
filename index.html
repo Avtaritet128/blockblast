@@ -35,7 +35,7 @@
             align-items: center;
             z-index: 20000;
             animation: fadeOut 0.5s ease forwards;
-            animation-delay: 1s;
+            animation-delay: 0.8s;
         }
         @keyframes fadeOut {
             from { opacity: 1; visibility: visible; }
@@ -61,11 +61,6 @@
             justify-content: center;
             align-items: center;
             z-index: 10000;
-            animation: fadeIn 0.4s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
         .menu-card {
             background: rgba(30, 30, 50, 0.9);
@@ -151,40 +146,6 @@
             touch-action: none;
         }
         canvas:active { cursor: grabbing; }
-        
-        .flash-effect {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9998;
-            animation: flashAnim 0.25s ease-out;
-        }
-        @keyframes flashAnim {
-            0% { background: radial-gradient(circle, rgba(255,255,255,0.7), rgba(255,200,100,0.4)); opacity: 1; }
-            100% { background: radial-gradient(circle, rgba(255,255,255,0), rgba(255,200,100,0)); opacity: 0; }
-        }
-        .combo-effect {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 40px;
-            font-weight: bold;
-            color: #ffd93d;
-            text-shadow: 0 0 20px #ff8c42;
-            pointer-events: none;
-            z-index: 9999;
-            animation: comboAnim 0.7s ease-out forwards;
-            white-space: nowrap;
-        }
-        @keyframes comboAnim {
-            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
-            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
-            100% { transform: translate(-50%, -100%) scale(0.8); opacity: 0; }
-        }
         
         .top-bar {
             display: flex;
@@ -276,7 +237,7 @@
             transform: translate(-50%, -50%);
         }
         
-        .modal-overlay, .gameover-overlay {
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -289,7 +250,7 @@
             align-items: center;
             z-index: 20001;
         }
-        .modal-card, .gameover-card {
+        .modal-card {
             background: linear-gradient(145deg, #2a3f4f, #1a2a38);
             border-radius: 48px;
             padding: 25px 22px;
@@ -298,16 +259,13 @@
             width: 85%;
             border: 1px solid rgba(255,200,100,0.5);
         }
-        .modal-title, .gameover-title {
+        .modal-title {
             font-size: 24px;
             font-weight: bold;
             color: #ff8c42;
             margin-bottom: 18px;
         }
-        .gameover-icon { font-size: 52px; margin-bottom: 10px; }
-        .gameover-score { background: #00000066; border-radius: 45px; padding: 8px 14px; margin: 14px 0; }
-        .gameover-score-value { font-size: 38px; font-weight: bold; color: #ffd93d; }
-        .modal-btn, .gameover-btn {
+        .modal-btn {
             background: #4CAF50;
             border: none;
             padding: 12px 16px;
@@ -321,14 +279,9 @@
             box-shadow: 0 3px 0 #2d6a2d;
             transition: 0.05s linear;
         }
-        .modal-btn:active, .gameover-btn:active { transform: translateY(2px); }
-        .modal-btn-danger, .gameover-btn-menu { background: #ff9800; box-shadow: 0 3px 0 #c66900; }
+        .modal-btn:active { transform: translateY(2px); }
+        .modal-btn-danger { background: #ff9800; box-shadow: 0 3px 0 #c66900; }
         .modal-close { background: #2c485e; box-shadow: 0 3px 0 #0f1920; margin-top: 16px; }
-        .gameover-buttons { display: flex; gap: 8px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
-        .gameover-btn-new { background: #4CAF50; }
-        .gameover-btn-menu { background: #ff9800; }
-        .gameover-buy-btn { background: linear-gradient(145deg, #ffd93d, #ffaa00); color: #5a3a00; }
-        .gameover-buy-btn-disabled { background: #555; color: #999; opacity: 0.6; cursor: not-allowed; }
         
         .volume-slider {
             width: 100%;
@@ -354,83 +307,6 @@
             border-radius: 50%;
             cursor: pointer;
             box-shadow: 0 0 5px #ffaa00;
-        }
-        
-        .confirm-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            backdrop-filter: blur(12px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 30000;
-            animation: fadeInScale 0.2s ease;
-        }
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .confirm-card {
-            background: linear-gradient(145deg, #2a3f4f, #1a2a38);
-            border-radius: 56px;
-            padding: 32px 28px;
-            text-align: center;
-            max-width: 300px;
-            width: 85%;
-            border: 1px solid rgba(255,200,100,0.5);
-            box-shadow: 0 30px 50px rgba(0,0,0,0.5);
-        }
-        .confirm-icon {
-            font-size: 56px;
-            margin-bottom: 16px;
-        }
-        .confirm-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ff8c42;
-            margin-bottom: 12px;
-        }
-        .confirm-text {
-            font-size: 16px;
-            color: #bdd4de;
-            margin-bottom: 24px;
-            line-height: 1.4;
-        }
-        .confirm-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-        }
-        .confirm-btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 40px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.05s linear;
-        }
-        .confirm-btn-yes {
-            background: #e15a4f;
-            color: white;
-            box-shadow: 0 4px 0 #862e24;
-        }
-        .confirm-btn-yes:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #862e24;
-        }
-        .confirm-btn-no {
-            background: #2c485e;
-            color: white;
-            box-shadow: 0 4px 0 #0f1920;
-        }
-        .confirm-btn-no:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #0f1920;
         }
         
         @media (max-width: 550px) {
@@ -493,786 +369,566 @@
 </div>
 
 <script>
-    // ==================== НАСТРОЙКИ ЗВУКА ====================
-    let soundEnabled = true;
-    let soundVolume = 0.25;
-    function loadSoundSetting() {
-        const saved = localStorage.getItem('blockblast_sound');
-        if (saved !== null) soundEnabled = saved === 'true';
-        const savedVol = localStorage.getItem('blockblast_volume');
-        if (savedVol !== null) soundVolume = parseFloat(savedVol);
-        else soundVolume = 0.25;
-    }
-    function saveSoundSetting() { localStorage.setItem('blockblast_sound', soundEnabled); }
-    function saveVolume() { localStorage.setItem('blockblast_volume', soundVolume); }
-    
-    // ==================== ФИГУРЫ ====================
-    const FIGURES_DATA = {
-        'single': [[0,0]],
-        'line2_h': [[0,0],[0,1]],
-        'line2_v': [[0,0],[1,0]],
-        'line3_h': [[0,0],[0,1],[0,2]],
-        'line3_v': [[0,0],[1,0],[2,0]],
-        'line4_h': [[0,0],[0,1],[0,2],[0,3]],
-        'line4_v': [[0,0],[1,0],[2,0],[3,0]],
-        'square2x2': [[0,0],[0,1],[1,0],[1,1]],
-        'square3x3': [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]],
-        'L_shape': [[0,0],[1,0],[2,0],[2,1]],
-        'T_shape': [[0,0],[0,1],[0,2],[1,1]],
-        'Z_shape': [[0,0],[0,1],[1,1],[1,2]],
-        'Z_mirror': [[0,1],[0,2],[1,0],[1,1]],
-        'corner_small': [[0,0],[0,1],[1,0]]
-    };
-    
-    const COLORS = ["#FF5757", "#57A5FF", "#57FF57", "#FFCE57", "#FF57FF", "#57FFFF", "#FFA557", "#A557FF"];
-    const WEIGHTS = {
-        'single': 3, 'line2_h': 2, 'line2_v': 2, 'line3_h': 2, 'line3_v': 2,
-        'line4_h': 1, 'line4_v': 1, 'square2x2': 2, 'square3x3': 1,
-        'L_shape': 2, 'T_shape': 2, 'Z_shape': 2, 'Z_mirror': 2, 'corner_small': 2
-    };
-    
-    function getRandomFigure() {
-        let weighted = [];
-        for (let [name, weight] of Object.entries(WEIGHTS)) {
-            for (let i = 0; i < weight; i++) weighted.push(name);
-        }
-        const name = weighted[Math.floor(Math.random() * weighted.length)];
-        const blocks = FIGURES_DATA[name].map(([r,c]) => ({ row: r, col: c }));
-        const color = COLORS[Math.floor(Math.random() * COLORS.length)];
-        return { blocks, color, name };
-    }
-    
-    function getBoundingBox(blocks) {
-        let minR = Infinity, maxR = -Infinity, minC = Infinity, maxC = -Infinity;
-        blocks.forEach(b => {
-            minR = Math.min(minR, b.row); maxR = Math.max(maxR, b.row);
-            minC = Math.min(minC, b.col); maxC = Math.max(maxC, b.col);
-        });
-        return { rows: maxR-minR+1, cols: maxC-minC+1, minR, maxR, minC, maxC };
-    }
-    
-    class FigureBag {
-        constructor() {
-            this.bag = [];
-            this.refill();
-        }
-        refill() {
-            this.bag = [];
-            for (let [name, weight] of Object.entries(WEIGHTS)) {
+    // УПРОЩЁННАЯ ВЕРСИЯ ДЛЯ ТЕЛЕФОНА
+    (function(){
+        // Простая проверка на ошибки
+        try {
+            // ==================== НАСТРОЙКИ ====================
+            let soundEnabled = true;
+            let soundVolume = 0.25;
+            
+            // ==================== ФИГУРЫ ====================
+            const FIGURES_DATA = {
+                'single': [[0,0]],
+                'line2_h': [[0,0],[0,1]],
+                'line2_v': [[0,0],[1,0]],
+                'line3_h': [[0,0],[0,1],[0,2]],
+                'line3_v': [[0,0],[1,0],[2,0]],
+                'line4_h': [[0,0],[0,1],[0,2],[0,3]],
+                'line4_v': [[0,0],[1,0],[2,0],[3,0]],
+                'square2x2': [[0,0],[0,1],[1,0],[1,1]],
+                'square3x3': [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]],
+                'L_shape': [[0,0],[1,0],[2,0],[2,1]],
+                'T_shape': [[0,0],[0,1],[0,2],[1,1]],
+                'Z_shape': [[0,0],[0,1],[1,1],[1,2]],
+                'Z_mirror': [[0,1],[0,2],[1,0],[1,1]],
+                'corner_small': [[0,0],[0,1],[1,0]]
+            };
+            
+            const COLORS = ["#FF5757", "#57A5FF", "#57FF57", "#FFCE57", "#FF57FF", "#57FFFF", "#FFA557", "#A557FF"];
+            const WEIGHTS = {
+                'single': 3, 'line2_h': 2, 'line2_v': 2, 'line3_h': 2, 'line3_v': 2,
+                'line4_h': 1, 'line4_v': 1, 'square2x2': 2, 'square3x3': 1,
+                'L_shape': 2, 'T_shape': 2, 'Z_shape': 2, 'Z_mirror': 2, 'corner_small': 2
+            };
+            
+            function getRandomFigure() {
+                let weighted = [];
+                for (let [name, weight] of Object.entries(WEIGHTS)) {
+                    for (let i = 0; i < weight; i++) weighted.push(name);
+                }
+                const name = weighted[Math.floor(Math.random() * weighted.length)];
                 const blocks = FIGURES_DATA[name].map(([r,c]) => ({ row: r, col: c }));
                 const color = COLORS[Math.floor(Math.random() * COLORS.length)];
-                for (let i = 0; i < weight; i++) {
-                    this.bag.push({ blocks: blocks.map(b => ({ ...b })), color, name });
-                }
+                return { blocks, color, name };
             }
-            for (let i = this.bag.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [this.bag[i], this.bag[j]] = [this.bag[j], this.bag[i]];
-            }
-        }
-        get() {
-            if (this.bag.length === 0) this.refill();
-            const fig = this.bag.shift();
-            return { blocks: fig.blocks.map(b => ({ ...b })), color: fig.color, name: fig.name, id: Math.random() };
-        }
-        get3() { return [this.get(), this.get(), this.get()]; }
-    }
-    
-    let audioCtx = null;
-    function initAudio() { if (!audioCtx && (window.AudioContext || window.webkitAudioContext)) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-    function playTone(freq, dur, type='sine', volMult=1) {
-        if (!soundEnabled) return;
-        if (!audioCtx) return;
-        try {
-            const now = audioCtx.currentTime;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.frequency.value = freq; osc.type = type;
-            const finalVol = Math.min(0.5, soundVolume * volMult);
-            gain.gain.setValueAtTime(finalVol, now);
-            gain.gain.exponentialRampToValueAtTime(0.00001, now + dur);
-            osc.start(); osc.stop(now + dur);
-        } catch(e) {}
-    }
-    function playPlace() { playTone(440, 0.07, 'triangle', 0.6); }
-    function playLineClear() { playTone(523.25, 0.12, 'sine', 0.8); setTimeout(() => playTone(659.25, 0.12, 'sine', 0.8), 90); }
-    function playMultiLine(lines) { [523.25, 659.25, 783.99, 1046.5].forEach((f,i) => i < lines && setTimeout(() => playTone(f, 0.18, 'sine', 0.9), i * 100)); }
-    function playFullClear() { [523.25, 659.25, 783.99, 1046.5, 1318.52].forEach((f,i) => setTimeout(() => playTone(f, 0.2, 'sine', 1.0), i * 120)); }
-    
-    function showFlash() { const f = document.createElement('div'); f.className = 'flash-effect'; document.body.appendChild(f); setTimeout(() => f.remove(), 250); }
-    function showCombo(msg) { const c = document.createElement('div'); c.className = 'combo-effect'; c.textContent = msg; document.body.appendChild(c); setTimeout(() => c.remove(), 650); }
-    
-    let hitAnimations = [];
-    function addHitAnimation(row, col) {
-        hitAnimations.push({ row, col, progress: 0 });
-    }
-    function animateHitEffects() {
-        let changed = false;
-        for (let i = 0; i < hitAnimations.length; i++) {
-            hitAnimations[i].progress += 0.25;
-            if (hitAnimations[i].progress >= 1) {
-                hitAnimations.splice(i, 1);
-                i--;
-                changed = true;
-            } else {
-                changed = true;
-            }
-        }
-        if (changed) drawBoard();
-        if (hitAnimations.length > 0) requestAnimationFrame(animateHitEffects);
-    }
-    
-    const SIZE = 9;
-    let grid = Array(SIZE).fill().map(() => Array(SIZE).fill(0));
-    let score = 0, best = 0, coins = 0;
-    let shapes = [], selectedIdx = -1, bag = null, gameOverFlag = false, saved = null;
-    let dragActive = false, dragFigure = null, dragPreview = null;
-    let dragOffsetX = 0, dragOffsetY = 0;
-    let hoverR = -1, hoverC = -1;
-    let canvas, ctx, scoreSpan, piecesDiv, bestGameSpan, coinsGameSpan, bestMenuSpan, coinsMenuSpan, gameUI, menuUI, loadingUI;
-    
-    let extraLifePrice = 10;
-    let extraLivesUsed = 0;
-    let maxExtraLivesPerGame = 3;
-    
-    function showConfirmDialog(title, message, onConfirm) {
-        const overlay = document.createElement('div');
-        overlay.className = 'confirm-overlay';
-        overlay.innerHTML = `
-            <div class="confirm-card">
-                <div class="confirm-icon">🔄</div>
-                <div class="confirm-title">${title}</div>
-                <div class="confirm-text">${message}</div>
-                <div class="confirm-buttons">
-                    <button class="confirm-btn confirm-btn-yes" id="confirmYes">ДА</button>
-                    <button class="confirm-btn confirm-btn-no" id="confirmNo">НЕТ</button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(overlay);
-        
-        document.getElementById('confirmYes').onclick = () => {
-            overlay.remove();
-            onConfirm();
-        };
-        document.getElementById('confirmNo').onclick = () => overlay.remove();
-        overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
-    }
-    
-    function saveGame() {
-        if(!bag) return;
-        saved = {
-            grid: grid.map(r=>[...r]), score, shapes: shapes.map(s=>({ blocks: s.blocks.map(b=>({row:b.row,col:b.col})), color: s.color, name: s.name, id: s.id })),
-            selectedIdx, bagState: { bag: bag.bag.map(b=>({ blocks: b.blocks.map(bb=>({row:bb.row,col:bb.col})), color: b.color, name: b.name })) },
-            gameOverFlag, extraLivesUsed, extraLifePrice
-        };
-        localStorage.setItem('blockblast_save', JSON.stringify(saved));
-    }
-    function loadGame() {
-        const data = localStorage.getItem('blockblast_save');
-        if(data) {
-            try {
-                const s = JSON.parse(data);
-                if(!s.gameOverFlag) {
-                    grid = s.grid; score = s.score;
-                    shapes = s.shapes;
-                    selectedIdx = s.selectedIdx; gameOverFlag = s.gameOverFlag;
-                    extraLivesUsed = s.extraLivesUsed || 0;
-                    extraLifePrice = s.extraLifePrice || 10;
-                    if(s.bagState) bag.bag = s.bagState.bag;
-                    updateScore(); drawBoard(); drawPieces(); return true;
-                }
-            } catch(e) {}
-        }
-        return false;
-    }
-    function loadBest() { best = parseInt(localStorage.getItem('bb_best')) || 0; updateBestUI(); }
-    function saveBest() { localStorage.setItem('bb_best', best); }
-    function loadCoins() { coins = parseInt(localStorage.getItem('bb_coins')) || 0; updateCoinsUI(); }
-    function saveCoins() { localStorage.setItem('bb_coins', coins); }
-    function updateBestUI() { if(bestGameSpan) bestGameSpan.innerText = best; if(bestMenuSpan) bestMenuSpan.innerText = best; }
-    function updateCoinsUI() { if(coinsGameSpan) coinsGameSpan.innerText = coins; if(coinsMenuSpan) coinsMenuSpan.innerText = coins; }
-    function checkBest() { if(score > best) { best = score; saveBest(); updateBestUI(); return true; } return false; }
-    function coinsForScore(s) { return Math.floor(s / 1000); }
-    function awardCoins() { const c = coinsForScore(score); if(c > 0) { coins += c; saveCoins(); updateCoinsUI(); return c; } return 0; }
-    
-    function canPlace(figure, r, c) {
-        for(let b of figure.blocks) {
-            const nr = r + b.row, nc = c + b.col;
-            if(nr<0 || nr>=SIZE || nc<0 || nc>=SIZE || grid[nr][nc]) return false;
-        }
-        return true;
-    }
-    function place(figure, r, c) {
-        for(let b of figure.blocks) grid[r + b.row][c + b.col] = 1;
-    }
-    
-    function getTopLeftFromTouch(figure, touchCellX, touchCellY, offsetX, offsetY) {
-        const box = getBoundingBox(figure.blocks);
-        let topRow = Math.round(touchCellY - offsetY - box.rows / 2);
-        let leftCol = Math.round(touchCellX - offsetX - box.cols / 2);
-        topRow = Math.max(0, Math.min(SIZE - box.rows, topRow));
-        leftCol = Math.max(0, Math.min(SIZE - box.cols, leftCol));
-        return { r: topRow, c: leftCol };
-    }
-    
-    function clearLines() {
-        let rows = [], cols = [];
-        for(let i=0; i<SIZE; i++) if(grid[i].every(v=>v===1)) rows.push(i);
-        for(let j=0; j<SIZE; j++) {
-            let full=true;
-            for(let i=0;i<SIZE;i++) if(grid[i][j]===0){full=false;break;}
-            if(full) cols.push(j);
-        }
-        let cleared=0;
-        let clearedPositions = [];
-        for(let r of rows) {
-            for(let j=0;j<SIZE;j++) {
-                if(grid[r][j]) {
-                    cleared++;
-                    clearedPositions.push({ row: r, col: j });
-                }
-                grid[r][j]=0;
-            }
-        }
-        for(let c of cols) {
-            for(let i=0;i<SIZE;i++) {
-                if(grid[i][c]) {
-                    cleared++;
-                    clearedPositions.push({ row: i, col: c });
-                }
-                grid[i][c]=0;
-            }
-        }
-        
-        for(let pos of clearedPositions) addHitAnimation(pos.row, pos.col);
-        if (clearedPositions.length > 0) animateHitEffects();
-        
-        let fullClear = true;
-        for(let i=0;i<SIZE;i++) for(let j=0;j<SIZE;j++) if(grid[i][j]) fullClear=false;
-        if(cleared) {
-            let lines = rows.length + cols.length;
-            let add = cleared * 15 + lines * 40;
-            let oldScore = score;
-            score += add;
-            updateScore(); checkBest();
-            if(fullClear) { playFullClear(); showFlash(); showCombo('✨ PERFECT CLEAR! ✨'); }
-            else if(lines >= 3) { playMultiLine(lines); showFlash(); if(lines>=4) showCombo(`🔥 ${lines} LINES! 🔥`); }
-            else { playLineClear(); }
-            let oldC = coinsForScore(oldScore), newC = coinsForScore(score);
-            if(newC > oldC) {
-                const n = document.createElement('div');
-                n.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:linear-gradient(145deg,#ffd93d,#ffaa00);color:#5a3a00;padding:8px 20px;border-radius:50px;font-weight:bold;font-size:18px;z-index:10002';
-                n.innerHTML=`+${newC-oldC} 🪙`;
-                document.body.appendChild(n);
-                setTimeout(()=>n.remove(),1500);
-            }
-            return true;
-        }
-        return false;
-    }
-    
-    function hasMoves() {
-        for(let f of shapes) {
-            const box = getBoundingBox(f.blocks);
-            for(let i=0; i<=SIZE-box.rows; i++) for(let j=0; j<=SIZE-box.cols; j++) if(canPlace(f,i,j)) return true;
-        }
-        return false;
-    }
-    
-    function buyExtraLife() {
-        if (extraLivesUsed >= maxExtraLivesPerGame) {
-            alert(`❌ Нельзя купить больше ${maxExtraLivesPerGame} дополнительных попыток за игру!`);
-            return false;
-        }
-        if (coins >= extraLifePrice) {
-            coins -= extraLifePrice;
-            saveCoins();
-            updateCoinsUI();
             
-            gameOverFlag = false;
-            extraLivesUsed++;
-            
-            grid = Array(SIZE).fill().map(() => Array(SIZE).fill(0));
-            shapes = bag.get3();
-            selectedIdx = -1;
-            drawBoard();
-            drawPieces();
-            saveGame();
-            
-            const notif = document.createElement('div');
-            notif.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(145deg,#4CAF50,#2d6a2d);color:white;padding:12px 24px;border-radius:50px;font-weight:bold;font-size:18px;z-index:10003;animation:fadeOut 1.5s ease forwards';
-            notif.innerHTML = `✅ Куплена доп. попытка! -${extraLifePrice} 🪙<br>Следующая будет стоить ${Math.min(extraLifePrice * 2, 80)} 🪙`;
-            document.body.appendChild(notif);
-            setTimeout(() => notif.remove(), 2000);
-            
-            extraLifePrice = Math.min(extraLifePrice * 2, 80);
-            return true;
-        } else {
-            alert(`❌ Недостаточно монет! Нужно ${extraLifePrice} 🪙 (у вас ${coins})`);
-            return false;
-        }
-    }
-    
-    function startNewGame() {
-        resetFull();
-        drawBoard();
-        drawPieces();
-        saveGame();
-    }
-    
-    function resetFull() {
-        grid=Array(SIZE).fill().map(()=>Array(SIZE).fill(0));
-        score=0;
-        gameOverFlag=false;
-        extraLivesUsed = 0;
-        extraLifePrice = 10;
-        bag=new FigureBag();
-        shapes=bag.get3();
-        selectedIdx=-1;
-        dragActive=false;
-        updateScore();
-        drawBoard();
-        drawPieces();
-        checkBest();
-        saveGame();
-    }
-    
-    function tryPlace(figure, r, c, idx) {
-        if(canPlace(figure, r, c)) {
-            place(figure, r, c);
-            shapes.splice(idx,1);
-            selectedIdx=-1;
-            playPlace();
-            clearLines();
-            drawBoard();
-            drawPieces();
-            saveGame();
-            if(!shapes.length) {
-                setTimeout(()=>{
-                    shapes = bag.get3();
-                    drawPieces();
-                    drawBoard();
-                    saveGame();
-                }, 100);
+            function getBoundingBox(blocks) {
+                let minR = Infinity, maxR = -Infinity, minC = Infinity, maxC = -Infinity;
+                blocks.forEach(b => {
+                    minR = Math.min(minR, b.row); maxR = Math.max(maxR, b.row);
+                    minC = Math.min(minC, b.col); maxC = Math.max(maxC, b.col);
+                });
+                return { rows: maxR-minR+1, cols: maxC-minC+1, minR, maxR, minC, maxC };
             }
-            if(!hasMoves() && shapes.length) {
-                setTimeout(()=>{
-                    const earnedCoins = awardCoins();
-                    const canBuy = extraLivesUsed < maxExtraLivesPerGame;
-                    const hasEnoughCoins = coins >= extraLifePrice;
-                    
-                    const ov = document.createElement('div');
-                    ov.className='gameover-overlay';
-                    ov.innerHTML = `
-                        <div class="gameover-card">
-                            <div class="gameover-icon">💀</div>
-                            <div class="gameover-title">GAME OVER</div>
-                            <div class="gameover-score"><div class="gameover-score-value">${score}</div></div>
-                            <div class="gameover-coins-earned" style="margin:8px 0;color:#ffd93d;">🏆 +${earnedCoins} монет</div>
-                            <div class="gameover-buttons">
-                                <button class="gameover-btn gameover-btn-new" id="gn">🔄 НОВАЯ</button>
-                                <button class="gameover-btn gameover-btn-menu" id="gm">🏠 МЕНЮ</button>
-                                ${canBuy ? `<button class="gameover-btn ${hasEnoughCoins ? 'gameover-buy-btn' : 'gameover-buy-btn-disabled'}" id="gbuy">${hasEnoughCoins ? '🪙 КУПИТЬ ПОПЫТКУ (' + extraLifePrice + ')' : '❌ НЕ ХВАТАЕТ (' + extraLifePrice + ')'}</button>` : ''}
-                            </div>
-                        </div>
-                    `;
-                    document.body.appendChild(ov);
-                    document.getElementById('gn').onclick = () => { ov.remove(); startNewGame(); showGame(); };
-                    document.getElementById('gm').onclick = () => { ov.remove(); showMenu(); };
-                    const buyBtn = document.getElementById('gbuy');
-                    if (buyBtn && canBuy) {
-                        buyBtn.onclick = () => {
-                            if (buyExtraLife()) {
-                                ov.remove();
-                                drawBoard();
-                                drawPieces();
-                                updateCoinsUI();
-                            } else {
-                                const newHasEnough = coins >= extraLifePrice;
-                                buyBtn.innerText = newHasEnough ? `🪙 КУПИТЬ ПОПЫТКУ (${extraLifePrice})` : `❌ НЕ ХВАТАЕТ (${extraLifePrice})`;
-                                buyBtn.className = `gameover-btn ${newHasEnough ? 'gameover-buy-btn' : 'gameover-buy-btn-disabled'}`;
-                            }
-                        };
+            
+            class FigureBag {
+                constructor() {
+                    this.bag = [];
+                    this.refill();
+                }
+                refill() {
+                    this.bag = [];
+                    for (let [name, weight] of Object.entries(WEIGHTS)) {
+                        const blocks = FIGURES_DATA[name].map(([r,c]) => ({ row: r, col: c }));
+                        const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+                        for (let i = 0; i < weight; i++) {
+                            this.bag.push({ blocks: blocks.map(b => ({ ...b })), color, name });
+                        }
                     }
-                }, 100);
-            }
-            return true;
-        }
-        return false;
-    }
-    
-    function drawShapeOnCanvas(figure, can, sz=75, isSelected=false) {
-        can.width=sz; can.height=sz;
-        const box = getBoundingBox(figure.blocks);
-        const blockW = sz / Math.max(box.rows, box.cols);
-        const offX = (sz - blockW * box.cols)/2 - box.minC * blockW;
-        const offY = (sz - blockW * box.rows)/2 - box.minR * blockW;
-        const t=can.getContext('2d');
-        t.clearRect(0,0,sz,sz);
-        for(let b of figure.blocks) {
-            const x = offX + b.col * blockW, y = offY + b.row * blockW;
-            const grad = t.createLinearGradient(x,y,x+blockW,y+blockW);
-            grad.addColorStop(0, figure.color);
-            grad.addColorStop(1, '#3a3a5a');
-            t.fillStyle = grad;
-            t.fillRect(x, y, blockW-2, blockW-2);
-            t.fillStyle = 'rgba(255,255,255,0.35)';
-            t.fillRect(x+2, y+2, blockW-8, 3);
-        }
-    }
-    
-    function drawBoard() {
-        const w=canvas.width, h=canvas.height, cw=w/SIZE, ch=h/SIZE;
-        ctx.clearRect(0,0,w,h);
-        for(let i=0;i<SIZE;i++) {
-            for(let j=0;j<SIZE;j++) {
-                const x=j*cw, y=i*ch;
-                let hitScale = 1;
-                for(let hit of hitAnimations) {
-                    if(hit.row === i && hit.col === j) hitScale = 1 + (1 - hit.progress) * 0.3;
+                    for (let i = this.bag.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [this.bag[i], this.bag[j]] = [this.bag[j], this.bag[i]];
+                    }
                 }
-                if(grid[i][j]) {
-                    const cx = x + cw/2, cy = y + ch/2;
-                    const scaledW = cw * hitScale, scaledH = ch * hitScale;
-                    const scaledX = cx - scaledW/2, scaledY = cy - scaledH/2;
-                    const grad=ctx.createLinearGradient(scaledX, scaledY, scaledX+scaledW, scaledY+scaledH);
-                    grad.addColorStop(0,'#6fc8ff'); grad.addColorStop(1,'#3c9fcf');
-                    ctx.fillStyle=grad;
-                    ctx.fillRect(scaledX, scaledY, scaledW-1.5, scaledH-1.5);
-                    ctx.fillStyle='#b1e2ff';
-                    ctx.fillRect(scaledX+3, scaledY+3, scaledW-7, scaledH-7);
-                } else {
-                    ctx.fillStyle='#1b2e39';
-                    ctx.fillRect(x,y,cw-1,ch-1);
-                    ctx.strokeStyle='#2f5568';
-                    ctx.lineWidth=0.8;
-                    ctx.strokeRect(x+1,y+1,cw-3,ch-3);
+                get() {
+                    if (this.bag.length === 0) this.refill();
+                    const fig = this.bag.shift();
+                    return { blocks: fig.blocks.map(b => ({ ...b })), color: fig.color, name: fig.name, id: Math.random() };
                 }
+                get3() { return [this.get(), this.get(), this.get()]; }
             }
-        }
-        if(selectedIdx!==-1 && !dragActive && shapes[selectedIdx]) {
-            ctx.globalAlpha=0.12;
-            ctx.fillStyle='#ffe29a';
-            ctx.fillRect(0,0,w,h);
-            ctx.globalAlpha=1;
-        }
-    }
-    
-    function drawBoardWithPreview(figure, hr, hc) {
-        const w=canvas.width, h=canvas.height, cw=w/SIZE, ch=h/SIZE;
-        ctx.clearRect(0,0,w,h);
-        for(let i=0;i<SIZE;i++) {
-            for(let j=0;j<SIZE;j++) {
-                const x=j*cw, y=i*ch;
-                let hitScale = 1;
-                for(let hit of hitAnimations) {
-                    if(hit.row === i && hit.col === j) hitScale = 1 + (1 - hit.progress) * 0.3;
-                }
-                if(grid[i][j]) {
-                    const cx = x + cw/2, cy = y + ch/2;
-                    const scaledW = cw * hitScale, scaledH = ch * hitScale;
-                    const scaledX = cx - scaledW/2, scaledY = cy - scaledH/2;
-                    const grad=ctx.createLinearGradient(scaledX, scaledY, scaledX+scaledW, scaledY+scaledH);
-                    grad.addColorStop(0,'#6fc8ff'); grad.addColorStop(1,'#3c9fcf');
-                    ctx.fillStyle=grad;
-                    ctx.fillRect(scaledX, scaledY, scaledW-1.5, scaledH-1.5);
-                    ctx.fillStyle='#b1e2ff';
-                    ctx.fillRect(scaledX+3, scaledY+3, scaledW-7, scaledH-7);
-                } else {
-                    ctx.fillStyle='#1b2e39';
-                    ctx.fillRect(x,y,cw-1,ch-1);
-                    ctx.strokeStyle='#2f5568';
-                    ctx.lineWidth=0.8;
-                    ctx.strokeRect(x+1,y+1,cw-3,ch-3);
-                }
-            }
-        }
-        if(figure && hr>=0 && hc>=0) {
-            ctx.globalAlpha=0.65;
-            const can = canPlace(figure, hr, hc);
-            for(let b of figure.blocks) {
-                const x=(hc+b.col)*cw, y=(hr+b.row)*ch;
-                ctx.fillStyle=can?'#90ff90':'#ff9090';
-                ctx.fillRect(x,y,cw-1.5,ch-1.5);
-                ctx.fillStyle='rgba(255,255,255,0.4)';
-                ctx.fillRect(x+3,y+3,cw-7,ch-7);
-            }
-            ctx.globalAlpha=1;
-        }
-        if(selectedIdx!==-1 && !dragActive && shapes[selectedIdx]) {
-            ctx.globalAlpha=0.12;
-            ctx.fillStyle='#ffe29a';
-            ctx.fillRect(0,0,w,h);
-            ctx.globalAlpha=1;
-        }
-    }
-    
-    function drawPieces() {
-        piecesDiv.innerHTML='';
-        shapes.forEach((f,idx)=>{
-            const card = document.createElement('button');
-            card.className = 'piece-card';
-            const mini = document.createElement('canvas');
-            mini.className = 'piece-canvas';
-            drawShapeOnCanvas(f, mini, 75);
-            card.appendChild(mini);
             
-            card.addEventListener('touchstart', (e)=>{
+            // ==================== ИГРОВОЕ ПОЛЕ ====================
+            const SIZE = 9;
+            let grid = Array(SIZE).fill().map(() => Array(SIZE).fill(0));
+            let score = 0, best = 0, coins = 0;
+            let shapes = [], selectedIdx = -1, bag = null;
+            let dragActive = false, dragFigure = null, dragPreview = null;
+            let dragOffsetX = 0, dragOffsetY = 0;
+            let hoverR = -1, hoverC = -1;
+            let canvas, ctx, scoreSpan, piecesDiv, bestGameSpan, coinsGameSpan, bestMenuSpan, coinsMenuSpan, gameUI, menuUI, loadingUI;
+            
+            function saveGame() {
+                try {
+                    if(!bag) return;
+                    let saved = {
+                        grid: grid.map(r=>[...r]), score, shapes: shapes.map(s=>({ blocks: s.blocks.map(b=>({row:b.row,col:b.col})), color: s.color, name: s.name, id: s.id })),
+                        selectedIdx, bagState: { bag: bag.bag.map(b=>({ blocks: b.blocks.map(bb=>({row:bb.row,col:bb.col})), color: b.color, name: b.name })) }
+                    };
+                    localStorage.setItem('blockblast_save', JSON.stringify(saved));
+                } catch(e) { console.log('Save error:', e); }
+            }
+            
+            function loadGame() {
+                try {
+                    const data = localStorage.getItem('blockblast_save');
+                    if(data) {
+                        const s = JSON.parse(data);
+                        grid = s.grid; score = s.score;
+                        shapes = s.shapes;
+                        selectedIdx = s.selectedIdx;
+                        if(s.bagState) bag.bag = s.bagState.bag;
+                        updateScore(); drawBoard(); drawPieces(); return true;
+                    }
+                } catch(e) { console.log('Load error:', e); }
+                return false;
+            }
+            
+            function loadBest() { 
+                try { best = parseInt(localStorage.getItem('bb_best')) || 0; } catch(e) { best = 0; }
+                updateBestUI(); 
+            }
+            function saveBest() { try { localStorage.setItem('bb_best', best); } catch(e) {} }
+            function loadCoins() { 
+                try { coins = parseInt(localStorage.getItem('bb_coins')) || 0; } catch(e) { coins = 0; }
+                updateCoinsUI(); 
+            }
+            function saveCoins() { try { localStorage.setItem('bb_coins', coins); } catch(e) {} }
+            function updateBestUI() { if(bestGameSpan) bestGameSpan.innerText = best; if(bestMenuSpan) bestMenuSpan.innerText = best; }
+            function updateCoinsUI() { if(coinsGameSpan) coinsGameSpan.innerText = coins; if(coinsMenuSpan) coinsMenuSpan.innerText = coins; }
+            function checkBest() { if(score > best) { best = score; saveBest(); updateBestUI(); return true; } return false; }
+            function awardCoins() { 
+                let earned = Math.floor(score / 1000); 
+                if(earned > 0) { 
+                    coins += earned; 
+                    saveCoins(); 
+                    updateCoinsUI(); 
+                } 
+                return earned; 
+            }
+            
+            function canPlace(figure, r, c) {
+                for(let b of figure.blocks) {
+                    const nr = r + b.row, nc = c + b.col;
+                    if(nr<0 || nr>=SIZE || nc<0 || nc>=SIZE || grid[nr][nc]) return false;
+                }
+                return true;
+            }
+            function place(figure, r, c) {
+                for(let b of figure.blocks) grid[r + b.row][c + b.col] = 1;
+            }
+            
+            function clearLines() {
+                let rows = [], cols = [];
+                for(let i=0; i<SIZE; i++) if(grid[i].every(v=>v===1)) rows.push(i);
+                for(let j=0; j<SIZE; j++) {
+                    let full=true;
+                    for(let i=0;i<SIZE;i++) if(grid[i][j]===0){full=false;break;}
+                    if(full) cols.push(j);
+                }
+                let cleared=0;
+                for(let r of rows) {
+                    for(let j=0;j<SIZE;j++) { if(grid[r][j]) cleared++; grid[r][j]=0; }
+                }
+                for(let c of cols) {
+                    for(let i=0;i<SIZE;i++) { if(grid[i][c]) cleared++; grid[i][c]=0; }
+                }
+                if(cleared) {
+                    let add = cleared * 15 + (rows.length + cols.length) * 40;
+                    score += add;
+                    updateScore(); checkBest();
+                    awardCoins();
+                    return true;
+                }
+                return false;
+            }
+            
+            function hasMoves() {
+                for(let f of shapes) {
+                    const box = getBoundingBox(f.blocks);
+                    for(let i=0; i<=SIZE-box.rows; i++) {
+                        for(let j=0; j<=SIZE-box.cols; j++) {
+                            if(canPlace(f,i,j)) return true;
+                        }
+                    }
+                }
+                return false;
+            }
+            
+            function tryPlace(figure, r, c, idx) {
+                if(canPlace(figure, r, c)) {
+                    place(figure, r, c);
+                    shapes.splice(idx,1);
+                    selectedIdx=-1;
+                    clearLines();
+                    drawBoard();
+                    drawPieces();
+                    saveGame();
+                    if(!shapes.length) {
+                        setTimeout(()=>{
+                            shapes = bag.get3();
+                            drawPieces();
+                            drawBoard();
+                            saveGame();
+                        }, 100);
+                    }
+                    if(!hasMoves() && shapes.length) {
+                        setTimeout(()=>{
+                            alert(`💀 GAME OVER! 💀\nСчёт: ${score}`);
+                            resetFull();
+                            showGame();
+                        }, 100);
+                    }
+                    return true;
+                }
+                return false;
+            }
+            
+            function getTopLeftFromTouch(figure, touchCellX, touchCellY, offsetX, offsetY) {
+                const box = getBoundingBox(figure.blocks);
+                let topRow = Math.round(touchCellY - offsetY - box.rows / 2);
+                let leftCol = Math.round(touchCellX - offsetX - box.cols / 2);
+                topRow = Math.max(0, Math.min(SIZE - box.rows, topRow));
+                leftCol = Math.max(0, Math.min(SIZE - box.cols, leftCol));
+                return { r: topRow, c: leftCol };
+            }
+            
+            function drawShapeOnCanvas(figure, can, sz=75) {
+                can.width=sz; can.height=sz;
+                const box = getBoundingBox(figure.blocks);
+                const blockW = sz / Math.max(box.rows, box.cols);
+                const offX = (sz - blockW * box.cols)/2 - box.minC * blockW;
+                const offY = (sz - blockW * box.rows)/2 - box.minR * blockW;
+                const t=can.getContext('2d');
+                t.clearRect(0,0,sz,sz);
+                for(let b of figure.blocks) {
+                    const x = offX + b.col * blockW, y = offY + b.row * blockW;
+                    const grad = t.createLinearGradient(x,y,x+blockW,y+blockW);
+                    grad.addColorStop(0, figure.color);
+                    grad.addColorStop(1, '#3a3a5a');
+                    t.fillStyle = grad;
+                    t.fillRect(x, y, blockW-2, blockW-2);
+                    t.fillStyle = 'rgba(255,255,255,0.35)';
+                    t.fillRect(x+2, y+2, blockW-8, 3);
+                }
+            }
+            
+            function drawBoard() {
+                if(!ctx) return;
+                const w=canvas.width, h=canvas.height, cw=w/SIZE, ch=h/SIZE;
+                ctx.clearRect(0,0,w,h);
+                for(let i=0;i<SIZE;i++) {
+                    for(let j=0;j<SIZE;j++) {
+                        const x=j*cw, y=i*ch;
+                        if(grid[i][j]) {
+                            const grad=ctx.createLinearGradient(x,y,x+cw,y+ch);
+                            grad.addColorStop(0,'#6fc8ff'); grad.addColorStop(1,'#3c9fcf');
+                            ctx.fillStyle=grad;
+                            ctx.fillRect(x,y,cw-1.5,ch-1.5);
+                            ctx.fillStyle='#b1e2ff';
+                            ctx.fillRect(x+3,y+3,cw-7,ch-7);
+                        } else {
+                            ctx.fillStyle='#1b2e39';
+                            ctx.fillRect(x,y,cw-1,ch-1);
+                            ctx.strokeStyle='#2f5568';
+                            ctx.lineWidth=0.8;
+                            ctx.strokeRect(x+1,y+1,cw-3,ch-3);
+                        }
+                    }
+                }
+                if(selectedIdx!==-1 && !dragActive && shapes[selectedIdx]) {
+                    ctx.globalAlpha=0.12;
+                    ctx.fillStyle='#ffe29a';
+                    ctx.fillRect(0,0,w,h);
+                    ctx.globalAlpha=1;
+                }
+            }
+            
+            function drawBoardWithPreview(figure, hr, hc) {
+                if(!ctx) return;
+                const w=canvas.width, h=canvas.height, cw=w/SIZE, ch=h/SIZE;
+                ctx.clearRect(0,0,w,h);
+                for(let i=0;i<SIZE;i++) {
+                    for(let j=0;j<SIZE;j++) {
+                        const x=j*cw, y=i*ch;
+                        if(grid[i][j]) {
+                            const grad=ctx.createLinearGradient(x,y,x+cw,y+ch);
+                            grad.addColorStop(0,'#6fc8ff'); grad.addColorStop(1,'#3c9fcf');
+                            ctx.fillStyle=grad;
+                            ctx.fillRect(x,y,cw-1.5,ch-1.5);
+                            ctx.fillStyle='#b1e2ff';
+                            ctx.fillRect(x+3,y+3,cw-7,ch-7);
+                        } else {
+                            ctx.fillStyle='#1b2e39';
+                            ctx.fillRect(x,y,cw-1,ch-1);
+                            ctx.strokeStyle='#2f5568';
+                            ctx.lineWidth=0.8;
+                            ctx.strokeRect(x+1,y+1,cw-3,ch-3);
+                        }
+                    }
+                }
+                if(figure && hr>=0 && hc>=0) {
+                    ctx.globalAlpha=0.65;
+                    const can = canPlace(figure, hr, hc);
+                    for(let b of figure.blocks) {
+                        const x=(hc+b.col)*cw, y=(hr+b.row)*ch;
+                        ctx.fillStyle=can?'#90ff90':'#ff9090';
+                        ctx.fillRect(x,y,cw-1.5,ch-1.5);
+                        ctx.fillStyle='rgba(255,255,255,0.4)';
+                        ctx.fillRect(x+3,y+3,cw-7,ch-7);
+                    }
+                    ctx.globalAlpha=1;
+                }
+                if(selectedIdx!==-1 && !dragActive && shapes[selectedIdx]) {
+                    ctx.globalAlpha=0.12;
+                    ctx.fillStyle='#ffe29a';
+                    ctx.fillRect(0,0,w,h);
+                    ctx.globalAlpha=1;
+                }
+            }
+            
+            function drawPieces() {
+                if(!piecesDiv) return;
+                piecesDiv.innerHTML='';
+                shapes.forEach((f,idx)=>{
+                    const card = document.createElement('button');
+                    card.className = 'piece-card';
+                    const mini = document.createElement('canvas');
+                    mini.className = 'piece-canvas';
+                    drawShapeOnCanvas(f, mini, 75);
+                    card.appendChild(mini);
+                    
+                    card.addEventListener('touchstart', (e)=>{
+                        e.preventDefault();
+                        const t = e.touches[0];
+                        const rect = card.getBoundingClientRect();
+                        const cardCenterX = rect.left + rect.width/2;
+                        const cardCenterY = rect.top + rect.height/2;
+                        dragOffsetX = (t.clientX - cardCenterX) / (rect.width/2) * 0.5;
+                        dragOffsetY = (t.clientY - cardCenterY) / (rect.height/2) * 0.5;
+                        startDrag(f, idx, t.clientX, t.clientY);
+                    });
+                    card.addEventListener('mousedown', (e)=>{
+                        e.preventDefault();
+                        const rect = card.getBoundingClientRect();
+                        const cardCenterX = rect.left + rect.width/2;
+                        const cardCenterY = rect.top + rect.height/2;
+                        dragOffsetX = (e.clientX - cardCenterX) / (rect.width/2) * 0.5;
+                        dragOffsetY = (e.clientY - cardCenterY) / (rect.height/2) * 0.5;
+                        startDrag(f, idx, e.clientX, e.clientY);
+                    });
+                    piecesDiv.appendChild(card);
+                });
+            }
+            
+            function startDrag(figure, idx, x, y) {
+                dragActive=true;
+                selectedIdx=idx;
+                dragFigure={
+                    blocks: figure.blocks.map(b=>({row:b.row,col:b.col})),
+                    color: figure.color,
+                    name: figure.name
+                };
+                dragPreview=document.createElement('div');
+                dragPreview.className='drag-preview';
+                const pc=document.createElement('canvas');
+                drawShapeOnCanvas(dragFigure, pc, 85);
+                dragPreview.appendChild(pc);
+                document.body.appendChild(dragPreview);
+                dragPreview.style.left=x+'px';
+                dragPreview.style.top=y+'px';
+                drawPieces();
+                window.addEventListener('touchmove', onMove);
+                window.addEventListener('touchend', onEnd);
+                window.addEventListener('mousemove', onMove);
+                window.addEventListener('mouseup', onEnd);
+            }
+            
+            function onMove(e) {
+                if(!dragActive) return;
                 e.preventDefault();
-                const t = e.touches[0];
-                const rect = card.getBoundingClientRect();
-                const cardCenterX = rect.left + rect.width/2;
-                const cardCenterY = rect.top + rect.height/2;
-                dragOffsetX = (t.clientX - cardCenterX) / (rect.width/2) * 0.5;
-                dragOffsetY = (t.clientY - cardCenterY) / (rect.height/2) * 0.5;
-                startDrag(f, idx, t.clientX, t.clientY);
-            });
-            card.addEventListener('mousedown', (e)=>{
-                e.preventDefault();
-                const rect = card.getBoundingClientRect();
-                const cardCenterX = rect.left + rect.width/2;
-                const cardCenterY = rect.top + rect.height/2;
-                dragOffsetX = (e.clientX - cardCenterX) / (rect.width/2) * 0.5;
-                dragOffsetY = (e.clientY - cardCenterY) / (rect.height/2) * 0.5;
-                startDrag(f, idx, e.clientX, e.clientY);
-            });
-            piecesDiv.appendChild(card);
-        });
-    }
-    
-    function startDrag(figure, idx, x, y) {
-        dragActive=true;
-        selectedIdx=idx;
-        dragFigure={
-            blocks: figure.blocks.map(b=>({row:b.row,col:b.col})),
-            color: figure.color,
-            name: figure.name
-        };
-        dragPreview=document.createElement('div');
-        dragPreview.className='drag-preview';
-        const pc=document.createElement('canvas');
-        drawShapeOnCanvas(dragFigure, pc, 85);
-        dragPreview.appendChild(pc);
-        document.body.appendChild(dragPreview);
-        dragPreview.style.left=x+'px';
-        dragPreview.style.top=y+'px';
-        drawPieces();
-        window.addEventListener('touchmove', onMove);
-        window.addEventListener('touchend', onEnd);
-        window.addEventListener('mousemove', onMove);
-        window.addEventListener('mouseup', onEnd);
-    }
-    
-    function onMove(e) {
-        if(!dragActive) return;
-        e.preventDefault();
-        let x,y;
-        if(e.touches) {
-            x=e.touches[0].clientX;
-            y=e.touches[0].clientY;
-        } else {
-            x=e.clientX;
-            y=e.clientY;
-        }
-        if(dragPreview) {
-            dragPreview.style.left=x+'px';
-            dragPreview.style.top=y+'px';
-        }
-        const rect=canvas.getBoundingClientRect();
-        if(x>=rect.left && x<=rect.right && y>=rect.top && y<=rect.bottom) {
-            const sx=canvas.width/rect.width, sy=canvas.height/rect.height;
-            const cx=(x-rect.left)*sx, cy=(y-rect.top)*sy;
-            const cw=canvas.width/SIZE, ch=canvas.height/SIZE;
-            const touchCellX = cx / cw;
-            const touchCellY = cy / ch;
-            const { r, c: colPos } = getTopLeftFromTouch(dragFigure, touchCellX, touchCellY, dragOffsetX, dragOffsetY);
-            hoverR = r;
-            hoverC = colPos;
-            drawBoardWithPreview(dragFigure, hoverR, hoverC);
-            return;
-        }
-        hoverR = -1;
-        hoverC = -1;
-        drawBoard();
-    }
-    
-    function onEnd(e) {
-        if(!dragActive) return;
-        dragActive=false;
-        if(dragPreview) {
-            dragPreview.remove();
-            dragPreview=null;
-        }
-        if(hoverR>=0 && hoverC>=0 && dragFigure && canPlace(dragFigure, hoverR, hoverC)) {
-            tryPlace(dragFigure, hoverR, hoverC, selectedIdx);
-        }
-        dragFigure=null;
-        hoverR=-1;
-        hoverC=-1;
-        selectedIdx=-1;
-        drawBoard();
-        drawPieces();
-        window.removeEventListener('touchmove', onMove);
-        window.removeEventListener('touchend', onEnd);
-        window.removeEventListener('mousemove', onMove);
-        window.removeEventListener('mouseup', onEnd);
-    }
-    
-    function onCanvasTap(e) {
-        if(dragActive) return;
-        const rect=canvas.getBoundingClientRect();
-        const sx=canvas.width/rect.width, sy=canvas.height/rect.height;
-        let x,y;
-        if(e.touches) {
-            x=e.touches[0].clientX;
-            y=e.touches[0].clientY;
-            e.preventDefault();
-        } else {
-            x=e.clientX;
-            y=e.clientY;
-        }
-        let cx=(x-rect.left)*sx, cy=(y-rect.top)*sy;
-        if(cx<0) cx=0; if(cy<0) cy=0;
-        const cw=canvas.width/SIZE, ch=canvas.height/SIZE;
-        const touchCellX = cx / cw;
-        const touchCellY = cy / ch;
-        if(selectedIdx!==-1 && shapes[selectedIdx]) {
-            const f=shapes[selectedIdx];
-            const { r, c: colPos } = getTopLeftFromTouch(f, touchCellX, touchCellY, 0, 0);
-            if(canPlace(f, r, colPos)) {
-                tryPlace(f, r, colPos, selectedIdx);
+                let x,y;
+                if(e.touches) {
+                    x=e.touches[0].clientX;
+                    y=e.touches[0].clientY;
+                } else {
+                    x=e.clientX;
+                    y=e.clientY;
+                }
+                if(dragPreview) {
+                    dragPreview.style.left=x+'px';
+                    dragPreview.style.top=y+'px';
+                }
+                const rect=canvas.getBoundingClientRect();
+                if(x>=rect.left && x<=rect.right && y>=rect.top && y<=rect.bottom) {
+                    const sx=canvas.width/rect.width, sy=canvas.height/rect.height;
+                    const cx=(x-rect.left)*sx, cy=(y-rect.top)*sy;
+                    const cw=canvas.width/SIZE, ch=canvas.height/SIZE;
+                    const touchCellX = cx / cw;
+                    const touchCellY = cy / ch;
+                    const { r, c: colPos } = getTopLeftFromTouch(dragFigure, touchCellX, touchCellY, dragOffsetX, dragOffsetY);
+                    hoverR = r;
+                    hoverC = colPos;
+                    drawBoardWithPreview(dragFigure, hoverR, hoverC);
+                    return;
+                }
+                hoverR = -1;
+                hoverC = -1;
+                drawBoard();
+            }
+            
+            function onEnd(e) {
+                if(!dragActive) return;
+                dragActive=false;
+                if(dragPreview) {
+                    dragPreview.remove();
+                    dragPreview=null;
+                }
+                if(hoverR>=0 && hoverC>=0 && dragFigure && canPlace(dragFigure, hoverR, hoverC)) {
+                    tryPlace(dragFigure, hoverR, hoverC, selectedIdx);
+                }
+                dragFigure=null;
+                hoverR=-1;
+                hoverC=-1;
+                selectedIdx=-1;
                 drawBoard();
                 drawPieces();
+                window.removeEventListener('touchmove', onMove);
+                window.removeEventListener('touchend', onEnd);
+                window.removeEventListener('mousemove', onMove);
+                window.removeEventListener('mouseup', onEnd);
             }
-        }
-    }
-    
-    function updateScore() { if(scoreSpan) scoreSpan.innerText=score; }
-    
-    function showGame() {
-        if(!loadGame()) resetFull();
-        menuUI.style.display='none';
-        gameUI.style.display='block';
-        updateBestUI();
-        updateCoinsUI();
-        initAudio();
-        if(audioCtx && soundEnabled) audioCtx.resume();
-    }
-    function showMenu() {
-        menuUI.style.display='flex';
-        gameUI.style.display='none';
-        updateBestUI();
-        updateCoinsUI();
-    }
-    
-    function showSettings() {
-        const ov=document.createElement('div');
-        ov.className='modal-overlay';
-        ov.innerHTML = `
-            <div class="modal-card">
-                <div class="modal-title">⚙️ НАСТРОЙКИ</div>
-                <button class="modal-btn" id="soundToggleBtn">${soundEnabled ? '🔊 ЗВУК ВКЛ' : '🔇 ЗВУК ВЫКЛ'}</button>
-                <div class="volume-slider">
-                    <span>🔊</span>
-                    <input type="range" id="volumeSlider" min="0" max="100" value="${soundVolume * 100}">
-                    <span>🔊</span>
-                </div>
-                <button class="modal-btn" id="newGameBtnSettings">🔄 НАЧАТЬ ЗАНОВО</button>
-                <button class="modal-btn modal-btn-danger" id="menuFromSettings">🏠 ГЛАВНОЕ МЕНЮ</button>
-                <button class="modal-btn modal-close" id="closeSettings">✖️ ЗАКРЫТЬ</button>
-            </div>
-        `;
-        document.body.appendChild(ov);
-        
-        document.getElementById('soundToggleBtn').onclick = () => {
-            soundEnabled = !soundEnabled;
-            saveSoundSetting();
-            const btn = document.getElementById('soundToggleBtn');
-            if (btn) btn.innerText = soundEnabled ? '🔊 ЗВУК ВКЛ' : '🔇 ЗВУК ВЫКЛ';
-            if (!soundEnabled && audioCtx) {
-                audioCtx.close();
-                audioCtx = null;
-            } else if (soundEnabled && !audioCtx) {
-                initAudio();
-                if (audioCtx) audioCtx.resume();
-            }
-        };
-        
-        const volumeSlider = document.getElementById('volumeSlider');
-        volumeSlider.oninput = (e) => {
-            soundVolume = e.target.value / 100;
-            saveVolume();
-        };
-        
-        document.getElementById('newGameBtnSettings').onclick = () => {
-            ov.remove();
-            showConfirmDialog(
-                '🔄 НАЧАТЬ ЗАНОВО',
-                'Весь прогресс в текущей игре будет потерян. Вы уверены?',
-                () => {
-                    startNewGame();
-                    showGame();
+            
+            function onCanvasTap(e) {
+                if(dragActive) return;
+                const rect=canvas.getBoundingClientRect();
+                const sx=canvas.width/rect.width, sy=canvas.height/rect.height;
+                let x,y;
+                if(e.touches) {
+                    x=e.touches[0].clientX;
+                    y=e.touches[0].clientY;
+                    e.preventDefault();
+                } else {
+                    x=e.clientX;
+                    y=e.clientY;
                 }
-            );
-        };
-        
-        document.getElementById('menuFromSettings').onclick = () => {
-            saveGame();
-            ov.remove();
-            showMenu();
-        };
-        
-        document.getElementById('closeSettings').onclick = () => ov.remove();
-        ov.onclick = (e) => { if(e.target === ov) ov.remove(); };
-    }
-    
-    // Регистрация Service Worker
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('Service Worker зарегистрирован:', reg))
-                .catch(err => console.log('Ошибка регистрации SW:', err));
-        });
-    }
-    
-    window.onload = () => {
-        loadSoundSetting();
-        canvas = document.getElementById('gridCanvas');
-        ctx = canvas.getContext('2d');
-        scoreSpan = document.getElementById('scoreValue');
-        piecesDiv = document.getElementById('piecesPanel');
-        bestGameSpan = document.getElementById('gameBestScore');
-        coinsGameSpan = document.getElementById('gameCoins');
-        bestMenuSpan = document.getElementById('menuBestScore');
-        coinsMenuSpan = document.getElementById('menuCoins');
-        gameUI = document.getElementById('gameInterface');
-        menuUI = document.getElementById('mainMenu');
-        loadingUI = document.getElementById('loadingScreen');
-        
-        loadBest();
-        loadCoins();
-        updateBestUI();
-        updateCoinsUI();
-        bag = new FigureBag();
-        
-        document.getElementById('playBtn').onclick = () => showGame();
-        document.getElementById('settingsBtn').onclick = () => showSettings();
-        
-        canvas.addEventListener('click', onCanvasTap);
-        canvas.addEventListener('touchstart', (e) => {
-            if(!dragActive){
-                e.preventDefault();
-                onCanvasTap(e);
+                let cx=(x-rect.left)*sx, cy=(y-rect.top)*sy;
+                if(cx<0) cx=0; if(cy<0) cy=0;
+                const cw=canvas.width/SIZE, ch=canvas.height/SIZE;
+                const touchCellX = cx / cw;
+                const touchCellY = cy / ch;
+                if(selectedIdx!==-1 && shapes[selectedIdx]) {
+                    const f=shapes[selectedIdx];
+                    const { r, c: colPos } = getTopLeftFromTouch(f, touchCellX, touchCellY, 0, 0);
+                    if(canPlace(f, r, colPos)) {
+                        tryPlace(f, r, colPos, selectedIdx);
+                        drawBoard();
+                        drawPieces();
+                    }
+                }
             }
-        });
-        
-        setTimeout(() => {
-            loadingUI.style.display = 'none';
-            menuUI.style.display = 'flex';
-        }, 1200);
-    };
+            
+            function updateScore() { if(scoreSpan) scoreSpan.innerText=score; }
+            
+            function resetFull() {
+                grid=Array(SIZE).fill().map(()=>Array(SIZE).fill(0));
+                score=0;
+                bag=new FigureBag();
+                shapes=bag.get3();
+                selectedIdx=-1;
+                dragActive=false;
+                updateScore();
+                drawBoard();
+                drawPieces();
+                checkBest();
+                saveGame();
+            }
+            
+            function showGame() {
+                if(!loadGame()) resetFull();
+                menuUI.style.display='none';
+                gameUI.style.display='block';
+                updateBestUI();
+                updateCoinsUI();
+            }
+            function showMenu() {
+                menuUI.style.display='flex';
+                gameUI.style.display='none';
+                updateBestUI();
+                updateCoinsUI();
+            }
+            
+            function showSettings() {
+                const ov=document.createElement('div');
+                ov.className='modal-overlay';
+                ov.innerHTML = `
+                    <div class="modal-card">
+                        <div class="modal-title">⚙️ НАСТРОЙКИ</div>
+                        <button class="modal-btn" id="newGameBtnSettings">🔄 НАЧАТЬ ЗАНОВО</button>
+                        <button class="modal-btn modal-btn-danger" id="menuFromSettings">🏠 ГЛАВНОЕ МЕНЮ</button>
+                        <button class="modal-btn modal-close" id="closeSettings">✖️ ЗАКРЫТЬ</button>
+                    </div>
+                `;
+                document.body.appendChild(ov);
+                
+                document.getElementById('newGameBtnSettings').onclick = () => {
+                    if(confirm('Начать новую игру? Весь прогресс будет потерян!')) {
+                        resetFull();
+                        showGame();
+                    }
+                    ov.remove();
+                };
+                document.getElementById('menuFromSettings').onclick = () => {
+                    saveGame();
+                    ov.remove();
+                    showMenu();
+                };
+                document.getElementById('closeSettings').onclick = () => ov.remove();
+                ov.onclick = (e) => { if(e.target === ov) ov.remove(); };
+            }
+            
+            // ИНИЦИАЛИЗАЦИЯ
+            window.onload = () => {
+                canvas = document.getElementById('gridCanvas');
+                ctx = canvas.getContext('2d');
+                scoreSpan = document.getElementById('scoreValue');
+                piecesDiv = document.getElementById('piecesPanel');
+                bestGameSpan = document.getElementById('gameBestScore');
+                coinsGameSpan = document.getElementById('gameCoins');
+                bestMenuSpan = document.getElementById('menuBestScore');
+                coinsMenuSpan = document.getElementById('menuCoins');
+                gameUI = document.getElementById('gameInterface');
+                menuUI = document.getElementById('mainMenu');
+                loadingUI = document.getElementById('loadingScreen');
+                
+                loadBest();
+                loadCoins();
+                updateBestUI();
+                updateCoinsUI();
+                bag = new FigureBag();
+                
+                document.getElementById('playBtn').onclick = () => showGame();
+                document.getElementById('settingsBtn').onclick = () => showSettings();
+                
+                canvas.addEventListener('click', onCanvasTap);
+                canvas.addEventListener('touchstart', (e) => {
+                    if(!dragActive){
+                        e.preventDefault();
+                        onCanvasTap(e);
+                    }
+                });
+                
+                setTimeout(() => {
+                    loadingUI.style.display = 'none';
+                    menuUI.style.display = 'flex';
+                }, 1000);
+            };
+        } catch(e) {
+            console.error('Game error:', e);
+            document.body.innerHTML = '<div style="color:white;text-align:center;margin-top:50px;">Ошибка загрузки игры. Пожалуйста, обновите страницу.</div>';
+        }
+    })();
 </script>
 </body>
 </html>

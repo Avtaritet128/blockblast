@@ -202,14 +202,14 @@
         .pieces-panel {
             display: flex;
             justify-content: center;
-            gap: 16px;
+            gap: 20px;
             margin: 14px 6px 8px;
             flex-wrap: wrap;
         }
         .piece-card {
             background: transparent;
             border: none;
-            padding: 0;
+            padding: 8px;
             cursor: grab;
             touch-action: none;
             transition: transform 0.1s ease;
@@ -222,8 +222,8 @@
             background: transparent;
             border-radius: 0;
             display: block;
-            width: 75px;
-            height: 75px;
+            width: 80px;
+            height: 80px;
             pointer-events: none;
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
         }
@@ -284,7 +284,7 @@
         .modal-close { background: #2c485e; box-shadow: 0 3px 0 #0f1920; margin-top: 16px; }
         
         @media (max-width: 550px) {
-            .piece-canvas { width: 65px; height: 65px; }
+            .piece-canvas { width: 70px; height: 70px; }
             .stats-left { gap: 10px; }
             .stat-value { font-size: 14px; }
             .coin-header { font-size: 14px; }
@@ -562,7 +562,7 @@
                 return { r: topRow, c: leftCol };
             }
             
-            function drawShapeOnCanvas(figure, can, sz=75) {
+            function drawShapeOnCanvas(figure, can, sz=80) {
                 can.width=sz; can.height=sz;
                 const box = getBoundingBox(figure.blocks);
                 const blockW = sz / Math.max(box.rows, box.cols);
@@ -660,33 +660,28 @@
                 if(!piecesDiv) return;
                 piecesDiv.innerHTML='';
                 shapes.forEach((f,idx)=>{
-                    const card = document.createElement('button');
+                    const card = document.createElement('div');
                     card.className = 'piece-card';
                     const mini = document.createElement('canvas');
                     mini.className = 'piece-canvas';
-                    drawShapeOnCanvas(f, mini, 75);
+                    drawShapeOnCanvas(f, mini, 80);
                     card.appendChild(mini);
                     
-                    // Только touchstart для телефона, без mousedown конфликта
+                    // Основной обработчик для перетаскивания
                     card.addEventListener('touchstart', (e)=>{
                         e.preventDefault();
-                        const t = e.touches[0];
+                        const touch = e.touches[0];
                         const rect = card.getBoundingClientRect();
-                        const cardCenterX = rect.left + rect.width/2;
-                        const cardCenterY = rect.top + rect.height/2;
-                        dragStartX = t.clientX - cardCenterX;
-                        dragStartY = t.clientY - cardCenterY;
-                        startDrag(f, idx, t.clientX, t.clientY);
+                        dragStartX = touch.clientX - rect.left - rect.width/2;
+                        dragStartY = touch.clientY - rect.top - rect.height/2;
+                        startDrag(f, idx, touch.clientX, touch.clientY);
                     });
                     
-                    // Для мыши (тестирование на ПК)
                     card.addEventListener('mousedown', (e)=>{
                         e.preventDefault();
                         const rect = card.getBoundingClientRect();
-                        const cardCenterX = rect.left + rect.width/2;
-                        const cardCenterY = rect.top + rect.height/2;
-                        dragStartX = e.clientX - cardCenterX;
-                        dragStartY = e.clientY - cardCenterY;
+                        dragStartX = e.clientX - rect.left - rect.width/2;
+                        dragStartY = e.clientY - rect.top - rect.height/2;
                         startDrag(f, idx, e.clientX, e.clientY);
                     });
                     
@@ -705,11 +700,16 @@
                 dragPreview=document.createElement('div');
                 dragPreview.className='drag-preview';
                 const pc=document.createElement('canvas');
-                drawShapeOnCanvas(dragFigure, pc, 85);
+                drawShapeOnCanvas(dragFigure, pc, 90);
                 dragPreview.appendChild(pc);
                 document.body.appendChild(dragPreview);
                 dragPreview.style.left=x+'px';
                 dragPreview.style.top=y+'px';
+                
+                // Подсвечиваем выбранную фигуру
+                document.querySelectorAll('.piece-card').forEach(card => {
+                    card.style.opacity = '0.5';
+                });
                 
                 window.addEventListener('touchmove', onMove);
                 window.addEventListener('touchend', onEnd);
@@ -739,7 +739,7 @@
                     const cw=canvas.width/SIZE, ch=canvas.height/SIZE;
                     const touchCellX = cx / cw;
                     const touchCellY = cy / ch;
-                    const { r, c: colPos } = getTopLeftFromTouch(dragFigure, touchCellX, touchCellY, dragStartX/75, dragStartY/75);
+                    const { r, c: colPos } = getTopLeftFromTouch(dragFigure, touchCellX, touchCellY, dragStartX/80, dragStartY/80);
                     hoverR = r;
                     hoverC = colPos;
                     drawBoardWithPreview(dragFigure, hoverR, hoverC);
@@ -764,6 +764,12 @@
                 hoverR=-1;
                 hoverC=-1;
                 selectedIdx=-1;
+                
+                // Восстанавливаем прозрачность
+                document.querySelectorAll('.piece-card').forEach(card => {
+                    card.style.opacity = '1';
+                });
+                
                 drawBoard();
                 drawPieces();
                 window.removeEventListener('touchmove', onMove);

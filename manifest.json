@@ -1,5 +1,5 @@
 {
-  "name": "Block Blast",
+  "name": "Block Blast by Avtaritet",
   "short_name": "BlockBlast",
   "description": "Классическая головоломка Block Blast. Расставляй фигуры, заполняй ряды и набирай очки!",
   "start_url": ".",
@@ -57,16 +57,16 @@
   ],
   "screenshots": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='720' height='1280' viewBox='0 0 720 1280'%3E%3Crect width='720' height='1280' fill='%231a1a2e'/%3E%3Ctext x='360' y='200' font-size='40' text-anchor='middle' fill='%23ffd93d'%3E🧩 BLOCK BLAST%3C/text%3E%3Ctext x='360' y='400' font-size='24' text-anchor='middle' fill='%23aaa'%3EИгровой процесс%3C/text%3E%3Crect x='160' y='450' width='400' height='400' fill='%230f0f1a' rx='20'/%3E%3C/svg%3E",
+      "src": "screenshot-1.png",
       "sizes": "720x1280",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "platform": "android",
-      "label": "Игровой процесс"
+      "label": "Игровой процесс Block Blast"
     },
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='720' height='1280' viewBox='0 0 720 1280'%3E%3Crect width='720' height='1280' fill='%231a1a2e'/%3E%3Ctext x='360' y='200' font-size='40' text-anchor='middle' fill='%23ffd93d'%3E🧩 BLOCK BLAST%3C/text%3E%3Ctext x='360' y='400' font-size='24' text-anchor='middle' fill='%23aaa'%3EВыбор фигур%3C/text%3E%3C/svg%3E",
+      "src": "screenshot-2.png",
       "sizes": "720x1280",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "platform": "android",
       "label": "Выбор фигур"
     }
